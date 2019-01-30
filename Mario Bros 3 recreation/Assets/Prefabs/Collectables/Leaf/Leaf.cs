@@ -6,4 +6,8 @@ public class Leaf : Collectable {
     protected override void Start() {
         base.Start();
     }
+
+    protected override void OnScreen() {
+
+    }
 }

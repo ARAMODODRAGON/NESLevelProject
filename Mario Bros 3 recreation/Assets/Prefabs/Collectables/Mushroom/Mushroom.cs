@@ -18,8 +18,7 @@ public class Mushroom : Collectable {
         riseLength = 0.9f;
     }
 
-    protected override void FixedUpdate() {
-        base.FixedUpdate();
+    protected override void OnScreen() {
         if(isInBlock) {
             RunExitBlockAnimation();
         } else {

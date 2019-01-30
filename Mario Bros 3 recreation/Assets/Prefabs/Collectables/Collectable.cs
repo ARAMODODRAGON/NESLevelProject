@@ -2,19 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Collectable : Entity {
-    protected override void Start() {
-        base.Start();
-    }
+public abstract class Collectable : Entity {
 
-    protected override void OnScreen() {
-        //do nothing
-    }
+    protected abstract override void OnScreen();
 
     protected override void OffScreen() {
         //delete the PowerUp
         //this is overriden by the coin as coins stay existant
-        Destroy(this);
+        Destroy(gameObject);
     }
     
 }

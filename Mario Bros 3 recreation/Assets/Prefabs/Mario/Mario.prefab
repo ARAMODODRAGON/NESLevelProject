@@ -10,13 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 4161618235097304}
   - component: {fileID: 212399749143389578}
-  - component: {fileID: 3716684380724766772}
+  - component: {fileID: 4395286006649957301}
   - component: {fileID: 61436812060112168}
   - component: {fileID: 50923328581691714}
   - component: {fileID: 7877079837203175758}
   m_Layer: 8
   m_Name: Mario
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -84,7 +84,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &3716684380724766772
+--- !u!95 &4395286006649957301
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -96,8 +96,8 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: c204b86523cbebe4bb9627f60a450a9e, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_UpdateMode: 1
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -220,7 +220,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 7.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

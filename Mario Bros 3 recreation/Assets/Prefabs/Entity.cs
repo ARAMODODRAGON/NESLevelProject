@@ -19,8 +19,9 @@ public abstract class Entity : MonoBehaviour {
     }
 
     protected virtual void FixedUpdate() {
+        //Debug.Log(transform.position - playerTransform.position);
         //gets the distance to the player
-        Vector2 distanceToPlayer = transform.position - playerTransform.position;
+        Vector3 distanceToPlayer = transform.position - playerTransform.position;
         //sets the x and y to their absolute values
         distanceToPlayer.x = Mathf.Abs(distanceToPlayer.x);
         distanceToPlayer.y = Mathf.Abs(distanceToPlayer.y);
@@ -32,6 +33,7 @@ public abstract class Entity : MonoBehaviour {
             OffScreen();
         }
     }
+
     protected abstract void OnScreen();
     protected abstract void OffScreen();
     

@@ -6,4 +6,8 @@ public class FireFlower : Collectable {
     protected override void Start() {
         base.Start();
     }
+
+    protected override void OnScreen() {
+
+    }
 }
