@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Leaf : PowerUp {
+public class FireFlower : Collectable {
     protected override void Start() {
         base.Start();
     }

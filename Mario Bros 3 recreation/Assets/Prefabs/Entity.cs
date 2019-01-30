@@ -4,17 +4,23 @@ using UnityEngine;
 
 public abstract class Entity : MonoBehaviour {
     //player variables
-    protected GameObject Player;
-    protected Transform PlayerTransform;
+    protected GameObject player;
+    protected Transform playerTransform;
+    protected Rigidbody2D rb;
 
+    protected Vector2 initialPosition;
+    
     protected virtual void Start() {
-        Player = GameObject.FindGameObjectWithTag("Player");
-        PlayerTransform = Player.transform;
+        player = GameObject.FindGameObjectWithTag("Player");
+        playerTransform = player.transform;
+        rb = GetComponent<Rigidbody2D>();
+
+        initialPosition = transform.position;
     }
 
     protected virtual void FixedUpdate() {
         //gets the distance to the player
-        Vector2 distanceToPlayer = transform.position - PlayerTransform.position;
+        Vector2 distanceToPlayer = transform.position - playerTransform.position;
         //sets the x and y to their absolute values
         distanceToPlayer.x = Mathf.Abs(distanceToPlayer.x);
         distanceToPlayer.y = Mathf.Abs(distanceToPlayer.y);
@@ -26,8 +32,7 @@ public abstract class Entity : MonoBehaviour {
             OffScreen();
         }
     }
-
     protected abstract void OnScreen();
-
     protected abstract void OffScreen();
+    
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FrogSuit : PowerUp {
+public class FrogSuit : Collectable {
     protected override void Start() {
         base.Start();
     }

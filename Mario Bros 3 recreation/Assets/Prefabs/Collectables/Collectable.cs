@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerUp : Entity {
+public class Collectable : Entity {
     protected override void Start() {
         base.Start();
     }
@@ -12,7 +12,9 @@ public class PowerUp : Entity {
     }
 
     protected override void OffScreen() {
-        //delete the powerup
+        //delete the PowerUp
+        //this is overriden by the coin as coins stay existant
         Destroy(this);
     }
+    
 }

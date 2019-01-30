@@ -4,28 +4,25 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
     //inputs
-    Joystick Axis;
-    Button Primary;
-    Button Secondary;
+    Joystick axis;
+    Button primary;
+    Button secondary;
 
-    //bool for changing the facing direction. 
-    static bool isFacingRight;
+    private bool isFacingRight;
+    public static bool hasLastMovedRight { get; private set; }
 
     private void Start() {
         string[] JoyX = new string[3];
         string[] JoyY = new string[3];
         JoyX[0] = "DPadX";
-        Axis = new Joystick(JoyX, JoyY);
+        axis = new Joystick(JoyX, JoyY);
+
         isFacingRight = true;
+        hasLastMovedRight = true;
     }
 
     private void CheckFacingDirection() {
 
     }
 
-    public static bool IsFacingRight {
-        get {
-            return isFacingRight;
-        }
-    }
 }
