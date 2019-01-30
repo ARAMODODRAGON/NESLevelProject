@@ -18,8 +18,8 @@ public abstract class Entity : MonoBehaviour {
         //sets the x and y to their absolute values
         distanceToPlayer.x = Mathf.Abs(distanceToPlayer.x);
         distanceToPlayer.y = Mathf.Abs(distanceToPlayer.y);
-
-        Debug.Log(distanceToPlayer);
+        
+        //checks the distances if they are too far
         if (distanceToPlayer.x < 6.0f || distanceToPlayer.y < 6.0f) {
             OnScreen();
         } else {
