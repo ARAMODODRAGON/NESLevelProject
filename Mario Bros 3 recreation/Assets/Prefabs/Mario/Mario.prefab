@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 61436812060112168}
   - component: {fileID: 50923328581691714}
   - component: {fileID: 7877079837203175758}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mario
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,7 +92,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1397169257031004}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: c204b86523cbebe4bb9627f60a450a9e, type: 2}
   m_CullingMode: 0
@@ -229,7 +229,7 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 0
-  m_HDR: 1
+  m_HDR: 0
   m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
