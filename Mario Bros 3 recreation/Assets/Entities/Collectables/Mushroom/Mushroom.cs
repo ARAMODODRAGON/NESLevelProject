@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Mushroom : Collectable {
     private bool isInBlock;
-    private bool isFacingRight;
 
     private float speed;
     private float riseLength;
@@ -19,7 +18,7 @@ public class Mushroom : Collectable {
     }
 
     protected override void OnScreen() {
-        if(isInBlock) {
+        if (isInBlock) {
             RunExitBlockAnimation();
         } else {
             MoveHorizontal();

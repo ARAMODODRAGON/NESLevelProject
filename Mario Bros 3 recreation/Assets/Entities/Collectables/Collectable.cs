@@ -8,7 +8,7 @@ public abstract class Collectable : Entity {
 
     protected override void OffScreen() {
         //delete the PowerUp
-        //this is overriden by the coin as coins stay existant
+        //this is overriden by the coin as coins stay existant when off screen
         Destroy(gameObject);
     }
     
