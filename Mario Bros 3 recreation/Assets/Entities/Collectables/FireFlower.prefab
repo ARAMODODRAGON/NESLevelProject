@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3356876145720990320
+--- !u!1 &4844036815725982353
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,40 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3356876145720990327}
-  - component: {fileID: 8634699366703593638}
-  - component: {fileID: 3940698533085353796}
-  - component: {fileID: 6353491580263411558}
-  - component: {fileID: 1617390020789821707}
+  - component: {fileID: 4844036815725982352}
+  - component: {fileID: 6226277466637887165}
+  - component: {fileID: 6121860014583476450}
+  - component: {fileID: 4721929166977195647}
+  - component: {fileID: 6180818997391204448}
   m_Layer: 0
-  m_Name: FrogSuit
+  m_Name: FireFlower
   m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3356876145720990327
+--- !u!4 &4844036815725982352
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3356876145720990320}
+  m_GameObject: {fileID: 4844036815725982353}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.24, y: -1.5, z: -0.14257812}
+  m_LocalPosition: {x: 4.97, y: -1.44, z: -0.14257812}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 601526122276863683}
+  - {fileID: 8913967115764075224}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &8634699366703593638
+--- !u!212 &6226277466637887165
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3356876145720990320}
+  m_GameObject: {fileID: 4844036815725982353}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300042, guid: 5e3ccded976a07446af5405a557c59f0, type: 3}
+  m_Sprite: {fileID: 21300012, guid: 5e3ccded976a07446af5405a557c59f0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -83,13 +83,13 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &3940698533085353796
+--- !u!61 &6121860014583476450
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3356876145720990320}
+  m_GameObject: {fileID: 4844036815725982353}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -109,14 +109,14 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!50 &6353491580263411558
+--- !u!50 &4721929166977195647
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3356876145720990320}
+  m_GameObject: {fileID: 4844036815725982353}
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
@@ -130,29 +130,29 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1617390020789821707
+--- !u!114 &6180818997391204448
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3356876145720990320}
+  m_GameObject: {fileID: 4844036815725982353}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b79289b6c886d8544b6fca22352d196d, type: 3}
+  m_Script: {fileID: 11500000, guid: 104e79dfb1ae55b48a02657efe3b515e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &4669583924691142958
+--- !u!1001 &3684077372414934325
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 3356876145720990327}
+    m_TransformParent: {fileID: 4844036815725982352}
     m_Modifications:
     - target: {fileID: 2502980589261498068, guid: 7ecbbf61af8a157459fd8b7058359368,
         type: 3}
       propertyPath: m_Name
-      value: Collider
+      value: EntityCollider
       objectReference: {fileID: 0}
     - target: {fileID: 5230012896212760557, guid: 7ecbbf61af8a157459fd8b7058359368,
         type: 3}
@@ -211,9 +211,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ecbbf61af8a157459fd8b7058359368, type: 3}
---- !u!4 &601526122276863683 stripped
+--- !u!4 &8913967115764075224 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5230012896212760557, guid: 7ecbbf61af8a157459fd8b7058359368,
     type: 3}
-  m_PrefabInstance: {fileID: 4669583924691142958}
+  m_PrefabInstance: {fileID: 3684077372414934325}
   m_PrefabAsset: {fileID: 0}

@@ -10,7 +10,6 @@ public class Mushroom : Collectable {
 
     protected override void Start() {
         base.Start();
-        isFacingRight = Player.hasLastMovedRight;
         isInBlock = true;
         rb.simulated = false;
         speed = 3.0f;
@@ -18,6 +17,7 @@ public class Mushroom : Collectable {
     }
 
     protected override void OnScreen() {
+        Debug.Log("Hey");
         if (isInBlock) {
             RunExitBlockAnimation();
         } else {
