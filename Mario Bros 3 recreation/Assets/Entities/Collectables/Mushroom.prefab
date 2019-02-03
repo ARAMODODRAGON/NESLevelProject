@@ -107,7 +107,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.3, y: 0.3}
   m_EdgeRadius: 0
 --- !u!50 &7240397177719160242
 Rigidbody2D:
@@ -127,7 +127,7 @@ Rigidbody2D:
   m_GravityScale: 7
   m_Material: {fileID: 6200000, guid: 62ecd1014336577438be045d7d383923, type: 2}
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &5068176028681137512
@@ -209,7 +209,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 5897201334771318174, guid: 7ecbbf61af8a157459fd8b7058359368,
+        type: 3}
+      propertyPath: m_EdgeRadius
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 8926493005844510982, guid: 7ecbbf61af8a157459fd8b7058359368,
+        type: 3}
+      propertyPath: distFromCollider
+      value: 0.07
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 7651286777681006783, guid: 7ecbbf61af8a157459fd8b7058359368, type: 3}
+    - {fileID: 1231263824947954938, guid: 7ecbbf61af8a157459fd8b7058359368, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7ecbbf61af8a157459fd8b7058359368, type: 3}
 --- !u!4 &4653185957549906804 stripped
 Transform:

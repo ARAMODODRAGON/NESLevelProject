@@ -42,7 +42,7 @@ public class Joystick {
     //two constructor with default values for the deadzone
     public Joystick(string XInput, string YInput) : this(XInput, YInput, 0.1f) { }
     public Joystick(string[] XInputs, string[] YInputs) : this(XInputs, YInputs, 0.1f) { }
-
+    
     public Vector2 Axis {
         get {
             //the variable to return
@@ -64,6 +64,25 @@ public class Joystick {
                 }
             }
             return axis;
-        }///get
+        }
     }
+
+    public void getDir() {
+        if (Axis.x < 0.0f) Left = true;
+        else Left = false;
+
+        if (Axis.x > 0.0f) Right = true;
+        else Right = false;
+
+        if (Axis.y < 0.0f) Down = true;
+        else Down = false;
+
+        if (Axis.y > 0.0f) Up = true;
+        else Up = false;
+    }
+
+    public bool Left { get; private set; }
+    public bool Right { get; private set; }
+    public bool Down { get; private set; }
+    public bool Up { get; private set; }
 }

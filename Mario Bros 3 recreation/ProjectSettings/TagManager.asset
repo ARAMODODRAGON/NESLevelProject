@@ -6,6 +6,8 @@ TagManager:
   tags:
   - PowerUp
   - EntityCollider
+  - CamBoundA
+  - CamBoundB
   layers:
   - Default
   - TransparentFX
@@ -15,10 +17,10 @@ TagManager:
   - UI
   - 
   - 
+  - EntityCollider
   - Entity
-  - 
-  - 
-  - 
+  - MainCamera
+  - CameraBounds
   - 
   - 
   - 

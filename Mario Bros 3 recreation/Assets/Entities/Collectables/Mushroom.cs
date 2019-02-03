@@ -10,14 +10,18 @@ public class Mushroom : Collectable {
 
     protected override void Start() {
         base.Start();
+        itemName = "Mushroom";
         isInBlock = true;
         rb.simulated = false;
         speed = 3.0f;
         riseLength = 0.9f;
     }
 
+    protected override void FoundPlayer() {
+        isFacingRight = !player.IsFacingRight();
+    }
+
     protected override void OnScreen() {
-        Debug.Log("Hey");
         if (isInBlock) {
             RunExitBlockAnimation();
         } else {
