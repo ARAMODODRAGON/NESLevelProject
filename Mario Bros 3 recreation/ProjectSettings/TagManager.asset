@@ -45,15 +45,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 2904617459
+    locked: 0
+  - name: Tiles
+    uniqueID: 2474303995
+    locked: 0
   - name: Entity
     uniqueID: 13708501
     locked: 0
   - name: Player
     uniqueID: 79852875
-    locked: 0
-  - name: Tiles
-    uniqueID: 2474303995
-    locked: 0
-  - name: Background
-    uniqueID: 2904617459
     locked: 0

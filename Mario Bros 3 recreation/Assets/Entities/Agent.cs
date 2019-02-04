@@ -73,9 +73,9 @@ public abstract class Agent : Entity {
     protected abstract void OffScreen();
 
     protected virtual void CheckForFlip() {
-        if (isFacingRight && collDir.Right()) {
+        if (isFacingRight && collDir.IsRightColliding) {
             Flip();
-        } else if (!isFacingRight && collDir.Left()) {
+        } else if (!isFacingRight && collDir.IsLeftColliding) {
             Flip();
         }
     }

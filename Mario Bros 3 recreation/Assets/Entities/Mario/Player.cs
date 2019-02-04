@@ -46,6 +46,10 @@ public class Player : Entity {
     private Meter PMeter;
     private float YVel;
 
+    //animation variables
+    private Animator anim;
+    private bool hadJumped;
+
     //=============================================================================================================================================//
 
     protected override void Start() {
@@ -57,7 +61,7 @@ public class Player : Entity {
         }
         base.Start();
         //start small
-        IsSmall = false;
+        IsSmall = true;
         isFacingRight = false;
         Flip();
 
@@ -89,6 +93,8 @@ public class Player : Entity {
         YTime.Amount = YTime.Max;
         PMeter = new Meter(0.0f, pTime);
         extraJumptime = 0.0f;
+
+        anim = GetComponent<Animator>();
     }
 
     private bool IsSmall {
@@ -104,6 +110,13 @@ public class Player : Entity {
             trigBig.enabled = !value;
             hitBig.enabled = !value;
             //if false then the reverse happens
+
+            //then change the hitbox detection
+            if (IsSmall) {
+                collDir.ChangeCollider((BoxCollider2D)hitSmall);
+            } else {
+                collDir.ChangeCollider((BoxCollider2D)hitBig);
+            }
         }
     }
 
@@ -147,6 +160,8 @@ public class Player : Entity {
 
         //apply the new velocity
         rb.velocity = new Vector3(XVel.Amount, YVel, 0.0f);
+
+        UpdateAnimVariables();
     }
 
     //=============================================================================================================================================//
@@ -160,8 +175,8 @@ public class Player : Entity {
     private void checkForFlip() {
         //only flips the player if their holding a direction and also is moving in that direction
         //eg. one direction is held but mario is sliding the other way so mario wont flip
-        if (isFacingRight && axis.Left && XVel.Amount <= 0.0f)      Flip();
-        if (!isFacingRight && axis.Right && XVel.Amount >= 0.0f)    Flip();
+        if (isFacingRight && axis.Left && (XVel.Amount <= 0.0f || !collDir.IsGrounded))      Flip();
+        if (!isFacingRight && axis.Right && (XVel.Amount >= 0.0f || !collDir.IsGrounded))    Flip();
     }
 
     private void calculatePSpeed() {
@@ -192,9 +207,9 @@ public class Player : Entity {
 
     private void HandleXMovement() {
         //if mario hits a wall then the speed gets set to 0
-        if (collDir.Right() && XVel.Amount > 0.0f) {
+        if (collDir.IsRightColliding && XVel.Amount > 0.0f) {
             XVel.Amount = 0.0f;
-        } else if (collDir.Left() && XVel.Amount < 0.0f) {
+        } else if (collDir.IsLeftColliding && XVel.Amount < 0.0f) {
             XVel.Amount = 0.0f;
         }
         
@@ -216,7 +231,7 @@ public class Player : Entity {
 
     private void calculateJumpHeight() {
         //calculates jump height based off run speed
-        if (collDir.Bottom()) {
+        if (collDir.IsGrounded) {
             extraJumptime = extraJumpHeight * XVel.Abs / maxPSpeed * (riseTime / jumpHeight);
             if (YTime.Amount >= YTime.Max - 0.01f) {
                 YTime.Amount = YTime.Max;
@@ -227,7 +242,7 @@ public class Player : Entity {
 
     private void HandleYMovement() {
         //reset the timer if player has pressed jump
-        if (aBut.ButtonDown && collDir.Bottom()) {
+        if (aBut.ButtonDown && collDir.IsGrounded) {
             YTime.Amount = 0.0f;
             YVel = jumpHeight / riseTime;
         }
@@ -244,7 +259,7 @@ public class Player : Entity {
         }
         
         //this end the timer imediately if the players head hits something
-        if (collDir.Top()) {
+        if (collDir.IsTopColliding) {
             YTime.Amount = YTime.Max;
             YVel = -fallSpeed;
         }
@@ -253,7 +268,75 @@ public class Player : Entity {
         if (YTime.Amount == YTime.Max) {
             YVel -= Time.fixedDeltaTime * fallAccel;
             if (rb.velocity.y < -fallSpeed) YVel = -fallSpeed / 2;
-            if (collDir.Bottom()) YVel = 0.0f;
+            if (collDir.IsGrounded) YVel = 0.0f;
+        }
+    }
+
+    private void UpdateAnimVariables() {
+        //tell if marios on the ground
+        anim.SetBool("IsGrounded", collDir.IsGrounded);
+
+        //the following are dependent on certain values
+
+        //this is for the diffrent run speeds
+        if (XVel.Abs >= maxPSpeed) {
+            anim.SetBool("IsPRun", true);
+        } else if (XVel.Abs >= maxRunSpeed) {
+            anim.SetBool("IsPRun", false);
+
+            anim.SetBool("IsRunning", true);
+        } else if (XVel.Abs >= maxWalkSpeed) {
+            anim.SetBool("IsPRun", false);
+            anim.SetBool("IsRunning", false);
+
+            anim.SetBool("IsFastWalking", true);
+        } else if (XVel.Abs > 0.0f) {
+            anim.SetBool("IsPRun", false);
+            anim.SetBool("IsRunning", false);
+            anim.SetBool("IsFastWalking", false);
+
+            anim.SetBool("IsWalking", true);
+        } else {
+            anim.SetBool("IsPRun", false);
+            anim.SetBool("IsRunning", false);
+            anim.SetBool("IsFastWalking", false);
+            anim.SetBool("IsWalking", false);
+        }
+
+        //this is for jumping
+        if (YVel > 0.0f) {
+            anim.SetBool("IsRising", true);
+        } else {
+            anim.SetBool("IsRising", false);
+        }
+
+        if (YVel < 0.0f) {
+            anim.SetBool("IsFalling", true);
+        } else {
+            anim.SetBool("IsFalling", false);
+        }
+
+        //this is when mario is moving one way and presses the opposite direction
+        if (axis.Right && XVel.Amount < 0.0f) {
+            anim.SetBool("HeldOppositeDir", true);
+        } else if (axis.Left && XVel.Amount > 0.0f) {
+            anim.SetBool("HeldOppositeDir", true);
+        } else {
+            anim.SetBool("HeldOppositeDir", false);
+        }
+
+        //this is for marios pspeed jump
+        if (PMeter.Amount >= PMeter.Max && !collDir.IsGrounded) {
+            anim.SetBool("PSpeedIsActive", true);
+        } else if (collDir.IsGrounded) {
+            anim.SetBool("PSpeedIsActive", false);
+        }
+
+        //this is for determining when marios animation should be a jump or fall
+        if (collDir.IsGrounded && aBut.ButtonHeld) {
+            anim.SetBool("HadJumped", true);
+        } else if (collDir.IsGrounded) {
+            anim.SetBool("HadJumped", false);
         }
     }
 
