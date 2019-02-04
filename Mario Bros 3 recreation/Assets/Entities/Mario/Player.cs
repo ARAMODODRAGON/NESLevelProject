@@ -97,6 +97,8 @@ public class Player : Entity {
         anim = GetComponent<Animator>();
     }
 
+    //=============================================================================================================================================//
+
     private bool IsSmall {
         get {
             // if both small colliders are enabled and big colliders are disabled then return true
@@ -110,13 +112,6 @@ public class Player : Entity {
             trigBig.enabled = !value;
             hitBig.enabled = !value;
             //if false then the reverse happens
-
-            //then change the hitbox detection
-            if (IsSmall) {
-                collDir.ChangeCollider((BoxCollider2D)hitSmall);
-            } else {
-                collDir.ChangeCollider((BoxCollider2D)hitBig);
-            }
         }
     }
 
@@ -160,7 +155,8 @@ public class Player : Entity {
 
         //apply the new velocity
         rb.velocity = new Vector3(XVel.Amount, YVel, 0.0f);
-
+        
+        //updates the properties in the animation controller
         UpdateAnimVariables();
     }
 
@@ -171,6 +167,8 @@ public class Player : Entity {
             //attack
         }
     }
+
+    //====================================================-------Movement-------===================================================================//
 
     private void checkForFlip() {
         //only flips the player if their holding a direction and also is moving in that direction
@@ -265,12 +263,14 @@ public class Player : Entity {
         }
 
         //this applies downwards velocity once the timer is done
-        if (YTime.Amount == YTime.Max) {
+        if (YTime.Amount >= YTime.Max) {
             YVel -= Time.fixedDeltaTime * fallAccel;
             if (rb.velocity.y < -fallSpeed) YVel = -fallSpeed / 2;
-            if (collDir.IsGrounded) YVel = 0.0f;
+            if (collDir.IsGrounded && YVel <= 0.0f) YVel = 0.0f;
         }
     }
+
+    //=============================================================================================================================================//
 
     private void UpdateAnimVariables() {
         //tell if marios on the ground

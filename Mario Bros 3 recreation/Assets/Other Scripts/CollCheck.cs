@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CollCheck : MonoBehaviour {
-
-    [SerializeField] LayerMask lm;
-
+    
     [Header("Top Collider")]
     [Min(0.1f)]
     public float TopThickness = 0.09f;
@@ -13,6 +11,7 @@ public class CollCheck : MonoBehaviour {
     public float TopCoverage = 0.9f;
     [Min(0.0f)]
     public float TopDisplacement;
+    public LayerMask topLM;
 
     [Header("Left Collider")]
     [Min(0.1f)]
@@ -21,6 +20,7 @@ public class CollCheck : MonoBehaviour {
     public float LeftCoverage = 0.9f;
     [Min(0.0f)]
     public float LeftDisplacement;
+    public LayerMask leftLM;
 
     [Header("Right Collider")]
     [Min(0.1f)]
@@ -29,6 +29,7 @@ public class CollCheck : MonoBehaviour {
     public float RightCoverage = 0.9f;
     [Min(0.0f)]
     public float RightDisplacement;
+    public LayerMask rightLM;
 
     [Header("Bottom Collider")]
     [Min(0.1f)]
@@ -37,6 +38,7 @@ public class CollCheck : MonoBehaviour {
     public float BottomCoverage = 0.9f;
     [Min(0.0f)]
     public float BottomDisplacement;
+    public LayerMask bottomLM;
 
     [Space(10.0f)]
     [SerializeField] private bool drawBoxes = true;
@@ -77,17 +79,23 @@ public class CollCheck : MonoBehaviour {
         while (true) {
             //will wait until right before fixedupdate happens to get new collisions
             yield return new WaitForFixedUpdate();
-
-            //waits for the collider to be set by the parent
+            
+            //waits until theres an enabled box collider on the object
             if (thisCol == null) {
-                continue;
+                foreach (BoxCollider2D col in GetComponents<BoxCollider2D>()) {
+                    if (col.enabled) {
+                        thisCol = col;
+                    }
+                }
+                if(thisCol == null) {
+                    continue;
+                }
             }
 
             Vector2 colliderCenter = thisCol.bounds.center;
             Vector2 halfExtents = thisCol.bounds.extents;
             halfExtents.x += thisCol.edgeRadius;
             halfExtents.y += thisCol.edgeRadius;
-            Debug.Log(halfExtents);
 
             //side is only checked for if check is set to true
             if (CheckBottom) {
@@ -101,7 +109,7 @@ public class CollCheck : MonoBehaviour {
                 boxSize.y = BottomThickness;
 
                 //then caluculates and returns true if there was a collision
-                IsGrounded = Physics2D.OverlapBox(boxCenter, boxSize, 0.0f, lm);
+                IsGrounded = Physics2D.OverlapBox(boxCenter, boxSize, 0.0f, bottomLM);
 
                 //now draw the box
                 DrawBox(boxCenter, boxSize, Color.blue);
@@ -119,7 +127,7 @@ public class CollCheck : MonoBehaviour {
                 boxSize.y = TopThickness;
 
                 //then caluculates and returns true if there was a collision
-                IsTopColliding = Physics2D.OverlapBox(boxCenter, boxSize, 0.0f, lm);
+                IsTopColliding = Physics2D.OverlapBox(boxCenter, boxSize, 0.0f, topLM);
 
                 //now draw the box
                 DrawBox(boxCenter, boxSize, Color.blue);
@@ -137,7 +145,7 @@ public class CollCheck : MonoBehaviour {
                 boxSize.y = halfExtents.x * 2.0f * LeftCoverage;
 
                 //then caluculates and returns true if there was a collision
-                IsLeftColliding = Physics2D.OverlapBox(boxCenter, boxSize, 0.0f, lm);
+                IsLeftColliding = Physics2D.OverlapBox(boxCenter, boxSize, 0.0f, leftLM);
 
                 //now draw the box
                 DrawBox(boxCenter, boxSize, Color.blue);
@@ -155,7 +163,7 @@ public class CollCheck : MonoBehaviour {
                 boxSize.y = halfExtents.x * 2.0f * RightCoverage;
 
                 //then caluculates and returns true if there was a collision
-                IsRightColliding = Physics2D.OverlapBox(boxCenter, boxSize, 0.0f, lm);
+                IsRightColliding = Physics2D.OverlapBox(boxCenter, boxSize, 0.0f, rightLM);
 
                 //now draw the box
                 DrawBox(boxCenter, boxSize, Color.blue);
@@ -178,9 +186,5 @@ public class CollCheck : MonoBehaviour {
             Debug.DrawLine(new Vector2(center.x - size.x / 2.0f, center.y - size.y / 2.0f),
                 new Vector2(center.x + size.x / 2.0f, center.y - size.y / 2.0f), color);
         }
-    }
-
-    public void ChangeCollider(BoxCollider2D coll) {
-        thisCol = coll;
     }
 }

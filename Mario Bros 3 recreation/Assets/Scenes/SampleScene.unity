@@ -835,7 +835,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 266293187, guid: 8d775244e5953d2468a531cbb2b14a35, type: 3}
       propertyPath: Min.Array.data[0].x
-      value: 1
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 266293187, guid: 8d775244e5953d2468a531cbb2b14a35, type: 3}
       propertyPath: Max.Array.data[0].x
@@ -851,7 +851,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 266293187, guid: 8d775244e5953d2468a531cbb2b14a35, type: 3}
       propertyPath: Max.Array.data[0].y
-      value: 18.5
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 6634263189456822519, guid: 8d775244e5953d2468a531cbb2b14a35,
         type: 3}
@@ -4287,13 +4287,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8466602141722201900, guid: 6f9060c84ad590f44bda732db634c703,
         type: 3}
-      propertyPath: BottomDisplacement
-      value: 0
+      propertyPath: BottomThickness
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 8466602141722201900, guid: 6f9060c84ad590f44bda732db634c703,
         type: 3}
-      propertyPath: BottomThickness
-      value: 0.2
+      propertyPath: BottomCoverage
+      value: 0.8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f9060c84ad590f44bda732db634c703, type: 3}

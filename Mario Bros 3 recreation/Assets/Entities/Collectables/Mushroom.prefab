@@ -212,7 +212,22 @@ PrefabInstance:
     - target: {fileID: 5897201334771318174, guid: 7ecbbf61af8a157459fd8b7058359368,
         type: 3}
       propertyPath: m_EdgeRadius
-      value: 0.01
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897201334771318174, guid: 7ecbbf61af8a157459fd8b7058359368,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897201334771318174, guid: 7ecbbf61af8a157459fd8b7058359368,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5897201334771318174, guid: 7ecbbf61af8a157459fd8b7058359368,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: 8926493005844510982, guid: 7ecbbf61af8a157459fd8b7058359368,
         type: 3}
