@@ -31,7 +31,7 @@ public abstract class Agent : Entity {
         }
         //gets the player transform
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-        if (collDir == null) {
+        if (cc == null) {
             Debug.LogError("No CollDir script found on child of " + name);
         } else {
             canAutoflip = true;
@@ -73,9 +73,9 @@ public abstract class Agent : Entity {
     protected abstract void OffScreen();
 
     protected virtual void CheckForFlip() {
-        if (isFacingRight && collDir.IsRightColliding) {
+        if (isFacingRight && cc.IsRightColliding) {
             Flip();
-        } else if (!isFacingRight && collDir.IsLeftColliding) {
+        } else if (!isFacingRight && cc.IsLeftColliding) {
             Flip();
         }
     }

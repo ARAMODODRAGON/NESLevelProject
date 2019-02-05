@@ -18,7 +18,7 @@ public class Player : Entity {
     private Button bBut;
 
     // the players different states
-    private enum powerups { small, big, fire, leaf, frog };
+    private enum powerups {dead, small, big, fire, leaf, frog};
     private powerups curPowerUp;
     private bool isJumping;
     private bool isCrouching;
@@ -50,6 +50,8 @@ public class Player : Entity {
     private Animator anim;
     private bool hadJumped;
 
+    public GameObject fireBall;
+
     //=============================================================================================================================================//
 
     protected override void Start() {
@@ -61,7 +63,7 @@ public class Player : Entity {
         }
         base.Start();
         //start small
-        IsSmall = true;
+        IsSmall = false; 
         isFacingRight = false;
         Flip();
 
@@ -145,17 +147,19 @@ public class Player : Entity {
         //flip the player accordingly
         checkForFlip();
 
+        HandleAttack();
+
         //first is horizontal movement
         calculatePSpeed();
         HandleXMovement();
 
         //second is vertical movement
         calculateJumpHeight();
-        HandleYMovement(); 
+        HandleYMovement();
 
         //apply the new velocity
         rb.velocity = new Vector3(XVel.Amount, YVel, 0.0f);
-        
+
         //updates the properties in the animation controller
         UpdateAnimVariables();
     }
@@ -164,7 +168,14 @@ public class Player : Entity {
 
     private void HandleAttack() {
         if (bBut.ButtonDown) {
-            //attack
+            if (curPowerUp == powerups.fire) {
+                Vector3 spawnPos = hitBig.bounds.center;
+                spawnPos.y += hitBig.bounds.extents.y / 2.0f;
+                GameObject ob = Instantiate(fireBall, spawnPos, Quaternion.Euler(Vector3.zero));
+                ob.GetComponent<FireBallController>().IsFacingRight = isFacingRight;
+            } else if (curPowerUp == powerups.leaf) {
+
+            }
         }
     }
 
@@ -173,8 +184,8 @@ public class Player : Entity {
     private void checkForFlip() {
         //only flips the player if their holding a direction and also is moving in that direction
         //eg. one direction is held but mario is sliding the other way so mario wont flip
-        if (isFacingRight && axis.Left && (XVel.Amount <= 0.0f || !collDir.IsGrounded))      Flip();
-        if (!isFacingRight && axis.Right && (XVel.Amount >= 0.0f || !collDir.IsGrounded))    Flip();
+        if (isFacingRight && axis.Left && (XVel.Amount <= 0.0f || !cc.IsGrounded)) Flip();
+        if (!isFacingRight && axis.Right && (XVel.Amount >= 0.0f || !cc.IsGrounded)) Flip();
     }
 
     private void calculatePSpeed() {
@@ -205,12 +216,12 @@ public class Player : Entity {
 
     private void HandleXMovement() {
         //if mario hits a wall then the speed gets set to 0
-        if (collDir.IsRightColliding && XVel.Amount > 0.0f) {
+        if (cc.IsRightColliding && XVel.Amount > 0.0f) {
             XVel.Amount = 0.0f;
-        } else if (collDir.IsLeftColliding && XVel.Amount < 0.0f) {
+        } else if (cc.IsLeftColliding && XVel.Amount < 0.0f) {
             XVel.Amount = 0.0f;
         }
-        
+
         //accelerate in the given direction as long as the speed is slower than the max
         if ((axis.Left ^ axis.Right) && XVel.Abs <= XVel.Range) {
             if (axis.Left) {
@@ -229,7 +240,7 @@ public class Player : Entity {
 
     private void calculateJumpHeight() {
         //calculates jump height based off run speed
-        if (collDir.IsGrounded) {
+        if (cc.IsGrounded) {
             extraJumptime = extraJumpHeight * XVel.Abs / maxPSpeed * (riseTime / jumpHeight);
             if (YTime.Amount >= YTime.Max - 0.01f) {
                 YTime.Amount = YTime.Max;
@@ -240,7 +251,7 @@ public class Player : Entity {
 
     private void HandleYMovement() {
         //reset the timer if player has pressed jump
-        if (aBut.ButtonDown && collDir.IsGrounded) {
+        if (aBut.ButtonDown && cc.IsGrounded) {
             YTime.Amount = 0.0f;
             YVel = jumpHeight / riseTime;
         }
@@ -255,9 +266,9 @@ public class Player : Entity {
         if (!aBut.ButtonHeld && YTime.Amount >= (minJumpHeight / jumpHeight) * riseTime) {
             YTime.Amount = YTime.Max;
         }
-        
+
         //this end the timer imediately if the players head hits something
-        if (collDir.IsTopColliding) {
+        if (cc.IsTopColliding) {
             YTime.Amount = YTime.Max;
             YVel = -fallSpeed;
         }
@@ -266,7 +277,7 @@ public class Player : Entity {
         if (YTime.Amount >= YTime.Max) {
             YVel -= Time.fixedDeltaTime * fallAccel;
             if (rb.velocity.y < -fallSpeed) YVel = -fallSpeed / 2;
-            if (collDir.IsGrounded && YVel <= 0.0f) YVel = 0.0f;
+            if (cc.IsGrounded && YVel <= 0.0f) YVel = 0.0f;
         }
     }
 
@@ -274,7 +285,7 @@ public class Player : Entity {
 
     private void UpdateAnimVariables() {
         //tell if marios on the ground
-        anim.SetBool("IsGrounded", collDir.IsGrounded);
+        anim.SetBool("IsGrounded", cc.IsGrounded && YVel <= 0.0f);
 
         //the following are dependent on certain values
 
@@ -326,18 +337,20 @@ public class Player : Entity {
         }
 
         //this is for marios pspeed jump
-        if (PMeter.Amount >= PMeter.Max && !collDir.IsGrounded) {
+        if (PMeter.Amount >= PMeter.Max && !cc.IsGrounded) {
             anim.SetBool("PSpeedIsActive", true);
-        } else if (collDir.IsGrounded) {
+        } else if (cc.IsGrounded) {
             anim.SetBool("PSpeedIsActive", false);
         }
 
         //this is for determining when marios animation should be a jump or fall
-        if (collDir.IsGrounded && aBut.ButtonHeld) {
+        if (cc.IsGrounded && aBut.ButtonHeld) {
             anim.SetBool("HadJumped", true);
-        } else if (collDir.IsGrounded) {
+        } else if (cc.IsGrounded) {
             anim.SetBool("HadJumped", false);
         }
+
+        anim.SetInteger("PowerUpState", (int)curPowerUp);
     }
 
 }

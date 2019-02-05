@@ -9,13 +9,13 @@ using UnityEngine;
 public abstract class Entity : MonoBehaviour {
     // components which all entities need
     protected Rigidbody2D rb;
-    protected CollCheck collDir;
+    protected CollCheck cc;
 
     protected bool isFacingRight;
 
     protected virtual void Start() {
         //get components
-        collDir = GetComponentInChildren<CollCheck>();
+        cc = GetComponentInChildren<CollCheck>();
         rb = GetComponent<Rigidbody2D>();
     }
 
