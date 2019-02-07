@@ -18,21 +18,28 @@ public class Player : Entity {
     private Button bBut;
 
     // the players different states
-    private enum powerups {dead, small, big, fire, leaf, frog};
-    private powerups curPowerUp;
-    private bool isJumping;
+    public enum Powerups { dead, small, big, fire, leaf, frog };
+    public Powerups curPowerUp;
+    public int currentPow {
+        get {
+            return (int)curPowerUp;
+        }
+    }
+    public bool isTransitioning;
     private bool isCrouching;
-    private bool isAttack;
     private bool isHover;
+    private bool isAttack;
+    private bool canAttack;
 
     //movement variables
+    [Header("X Movement Variables")]
     public float maxWalkSpeed;
     public float maxRunSpeed;
     public float maxPSpeed;
     public float pTime;
     public float XAccel;
     public float XDeccel;
-
+    [Header("Y Movement Variables")]
     public float jumpHeight;
     public float riseTime;
     public float fallSpeed;
@@ -44,7 +51,7 @@ public class Player : Entity {
     private Meter XVel;
     private Meter YTime;
     private Meter PMeter;
-    private float YVel;
+    public float YVel { get; private set; }
 
     //animation variables
     private Animator anim;
@@ -63,9 +70,10 @@ public class Player : Entity {
         }
         base.Start();
         //start small
-        IsSmall = false; 
+        IsSmall = true;
         isFacingRight = false;
         Flip();
+        curPowerUp = Powerups.small;
 
         //start setting up the directional inputs and button inputs
         string[] JoyX = new string[3];
@@ -89,7 +97,6 @@ public class Player : Entity {
         bBut = new Button(ButtonB);
         //end of directional input setup
 
-        curPowerUp = powerups.small;
         XVel = new Meter(maxWalkSpeed);
         YTime = new Meter(0.0f, riseTime);
         YTime.Amount = YTime.Max;
@@ -97,6 +104,8 @@ public class Player : Entity {
         extraJumptime = 0.0f;
 
         anim = GetComponent<Animator>();
+
+        isTransitioning = false;
     }
 
     //=============================================================================================================================================//
@@ -129,7 +138,14 @@ public class Player : Entity {
     //=============================================================================================================================================//
 
     public void CollectItem(string itemName) {
-
+        if (itemName.Equals("Mushroom") && curPowerUp == Powerups.small) {
+            IsSmall = true;
+            curPowerUp = Powerups.big;
+        }
+        if (itemName.Equals("FireFlower") && curPowerUp != Powerups.fire) {
+            IsSmall = false;
+            curPowerUp = Powerups.fire;
+        }
     }
 
     public void TakeDamage() {
@@ -139,26 +155,34 @@ public class Player : Entity {
     //=============================================================================================================================================//
 
     private void FixedUpdate() {
-        //do this once in the begining so i dont have to check multiple times
-        axis.getDir();
-        aBut.getInput();
-        bBut.getInput();
 
-        //flip the player accordingly
-        checkForFlip();
+        if (!isTransitioning) {
 
-        HandleAttack();
+            //do this once in the begining so i dont have to check multiple times
+            axis.getDir();
+            aBut.getInput();
+            bBut.getInput();
 
-        //first is horizontal movement
-        calculatePSpeed();
-        HandleXMovement();
+            //flip the player accordingly
+            CheckForFlip();
+            //Debug.Log(axis.Down + ", " + axis.Left + ", " + axis.Right);
 
-        //second is vertical movement
-        calculateJumpHeight();
-        HandleYMovement();
+            CheckForCrouch();
+            AttackCheck();
 
-        //apply the new velocity
-        rb.velocity = new Vector3(XVel.Amount, YVel, 0.0f);
+            //first is horizontal movement
+            calculatePSpeed();
+            HandleXMovement();
+
+            //second is vertical movement
+            calculateJumpHeight();
+            HandleYMovement();
+
+            //apply the new velocity
+            rb.velocity = new Vector3(XVel.Amount, YVel, 0.0f);
+        } else {
+            rb.velocity = Vector3.zero;
+        }
 
         //updates the properties in the animation controller
         UpdateAnimVariables();
@@ -166,26 +190,62 @@ public class Player : Entity {
 
     //=============================================================================================================================================//
 
-    private void HandleAttack() {
-        if (bBut.ButtonDown) {
-            if (curPowerUp == powerups.fire) {
-                Vector3 spawnPos = hitBig.bounds.center;
-                spawnPos.y += hitBig.bounds.extents.y / 2.0f;
-                GameObject ob = Instantiate(fireBall, spawnPos, Quaternion.Euler(Vector3.zero));
-                ob.GetComponent<FireBallController>().IsFacingRight = isFacingRight;
-            } else if (curPowerUp == powerups.leaf) {
-
-            }
+    private void AttackCheck() {
+        if (bBut.ButtonDown && (curPowerUp == Powerups.fire || curPowerUp == Powerups.leaf)) {
+            isAttack = true;
         }
+        int i = 0;
+        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Fireball")) {
+            i++;
+        }
+        if (i >= 2) {
+            canAttack = false;
+        } else {
+            canAttack = true;
+        }
+
+    }
+    
+    private void Attack() {
+        if (curPowerUp == Powerups.fire && GameObject.FindGameObjectsWithTag("Fireball").Length < 3) {
+            Debug.Log("Hey");
+            Vector3 spawnPos = hitBig.bounds.center;
+            spawnPos.y += hitBig.bounds.extents.y / 2.0f;
+            GameObject ob = Instantiate(fireBall, spawnPos, Quaternion.Euler(Vector3.zero));
+            ob.GetComponent<FireBallController>().IsFacingRight = isFacingRight;
+        } else if (curPowerUp == Powerups.leaf) {
+
+        }
+
+    }
+
+    private void EndAttack() {
+        isAttack = false;
     }
 
     //====================================================-------Movement-------===================================================================//
 
-    private void checkForFlip() {
+    private void CheckForFlip() {
         //only flips the player if their holding a direction and also is moving in that direction
         //eg. one direction is held but mario is sliding the other way so mario wont flip
         if (isFacingRight && axis.Left && (XVel.Amount <= 0.0f || !cc.IsGrounded)) Flip();
         if (!isFacingRight && axis.Right && (XVel.Amount >= 0.0f || !cc.IsGrounded)) Flip();
+
+        //this is for when they land and they arnt facing the right direction
+        if (XVel.Amount < 0.0f && isFacingRight && cc.IsGrounded) Flip();
+        if (XVel.Amount > 0.0f && !isFacingRight && cc.IsGrounded) Flip();
+    }
+
+    private void CheckForCrouch() {
+        if (curPowerUp != Powerups.small && cc.IsGrounded) {
+            if (axis.Down && !axis.Left && !axis.Right) {
+                isCrouching = true;
+                IsSmall = true;
+            } else {
+                isCrouching = false;
+                IsSmall = false;
+            }
+        }
     }
 
     private void calculatePSpeed() {
@@ -291,27 +351,21 @@ public class Player : Entity {
 
         //this is for the diffrent run speeds
         if (XVel.Abs >= maxPSpeed) {
-            anim.SetBool("IsPRun", true);
+            anim.SetInteger("Speed", 4);
         } else if (XVel.Abs >= maxRunSpeed) {
-            anim.SetBool("IsPRun", false);
-
-            anim.SetBool("IsRunning", true);
+            anim.SetInteger("Speed", 3);
         } else if (XVel.Abs >= maxWalkSpeed) {
-            anim.SetBool("IsPRun", false);
-            anim.SetBool("IsRunning", false);
-
-            anim.SetBool("IsFastWalking", true);
+            anim.SetInteger("Speed", 2);
         } else if (XVel.Abs > 0.0f) {
-            anim.SetBool("IsPRun", false);
-            anim.SetBool("IsRunning", false);
-            anim.SetBool("IsFastWalking", false);
-
-            anim.SetBool("IsWalking", true);
+            anim.SetInteger("Speed", 1);
         } else {
-            anim.SetBool("IsPRun", false);
-            anim.SetBool("IsRunning", false);
-            anim.SetBool("IsFastWalking", false);
-            anim.SetBool("IsWalking", false);
+            anim.SetInteger("Speed", 0);
+        }
+
+        if (PMeter.Amount == PMeter.Max) {
+            anim.SetBool("PSpeedIsActive", true);
+        } else {
+            anim.SetBool("PSpeedIsActive", false);
         }
 
         //this is for jumping
@@ -336,21 +390,10 @@ public class Player : Entity {
             anim.SetBool("HeldOppositeDir", false);
         }
 
-        //this is for marios pspeed jump
-        if (PMeter.Amount >= PMeter.Max && !cc.IsGrounded) {
-            anim.SetBool("PSpeedIsActive", true);
-        } else if (cc.IsGrounded) {
-            anim.SetBool("PSpeedIsActive", false);
-        }
-
-        //this is for determining when marios animation should be a jump or fall
-        if (cc.IsGrounded && aBut.ButtonHeld) {
-            anim.SetBool("HadJumped", true);
-        } else if (cc.IsGrounded) {
-            anim.SetBool("HadJumped", false);
-        }
-
+        anim.SetBool("IsCrouching", isCrouching);
         anim.SetInteger("PowerUpState", (int)curPowerUp);
+        anim.SetBool("IsAttacking", isAttack);
+        anim.SetBool("CanAttack", canAttack);
     }
 
 }

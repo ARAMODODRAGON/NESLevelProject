@@ -10,19 +10,46 @@ using UnityEngine;
  * (Not yet exists) Coin
  */
 public abstract class Collectable : Agent {
+    protected bool isInBlock;
+    private float riseLength;
 
     protected string itemName;
+    [HideInInspector]
+    public bool goUp;
 
-    protected override void Start() {
-        itemName = "item";
-        base.Start();
+    protected override void Awake() {
+        base.Awake();
+        goUp = true;
     }
 
-    protected abstract override void OnScreen();
+    protected override void Start() {
+        isInBlock = true;
+        itemName = "item";
+        base.Start();
+        riseLength = 0.9f;
+        rb.simulated = false;
+    }
+
+    protected override void OnScreen() {
+        if (isInBlock && goUp) {
+            RunExitBlockAnimation();
+        }
+    }
+
+    private void RunExitBlockAnimation() {
+        Vector2 newPos = transform.position;
+        newPos.y += Time.fixedDeltaTime / riseLength;
+        transform.position = newPos;
+
+        if (transform.position.y >= (initialPosition.y + 1.0f)) {
+            isInBlock = false;
+            rb.simulated = true;
+        }
+    }
 
     protected override void OffScreen() {
         //delete the PowerUp
-        //this is overriden by the coin as it is not a powerup
+        //this is overriden by the coin as it is not a powerup but is a collectable
         Destroy(gameObject);
     }
 

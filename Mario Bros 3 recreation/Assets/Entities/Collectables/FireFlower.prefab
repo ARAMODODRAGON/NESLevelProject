@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6121860014583476450}
   - component: {fileID: 4721929166977195647}
   - component: {fileID: 6180818997391204448}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: FireFlower
   m_TagString: PowerUp
   m_Icon: {fileID: 0}
@@ -69,8 +69,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 13708501
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300012, guid: 5e3ccded976a07446af5405a557c59f0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 104e79dfb1ae55b48a02657efe3b515e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goUp: 0
 --- !u!1001 &3684077372414934325
 PrefabInstance:
   m_ObjectHideFlags: 0

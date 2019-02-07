@@ -81,7 +81,7 @@ public class CollCheck : MonoBehaviour {
             yield return new WaitForFixedUpdate();
             
             //waits until theres an enabled box collider on the object
-            if (thisCol == null) {
+            if (thisCol == null || !thisCol.enabled) {
                 foreach (BoxCollider2D col in GetComponents<BoxCollider2D>()) {
                     if (col.enabled) {
                         thisCol = col;

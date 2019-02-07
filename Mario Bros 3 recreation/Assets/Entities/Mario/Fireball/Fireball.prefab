@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 8540503640258809396}
   - component: {fileID: 8540503640258809397}
   - component: {fileID: 8540503640258809398}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: Fireball
-  m_TagString: Untagged
+  m_TagString: Fireball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -137,25 +137,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TopThickness: 0.09
-  TopCoverage: 0.9
+  TopCoverage: 0.7
   TopDisplacement: 0
   topLM:
     serializedVersion: 2
     m_Bits: 0
-  LeftThickness: 0.09
-  LeftCoverage: 0.9
+  LeftThickness: 0.07
+  LeftCoverage: 0.7
   LeftDisplacement: 0
   leftLM:
     serializedVersion: 2
-    m_Bits: 0
-  RightThickness: 0.09
-  RightCoverage: 0.9
+    m_Bits: 1
+  RightThickness: 0.07
+  RightCoverage: 0.7
   RightDisplacement: 0
   rightLM:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
   BottomThickness: 0.3
-  BottomCoverage: 0.9
+  BottomCoverage: 0.7
   BottomDisplacement: -0.2
   bottomLM:
     serializedVersion: 2

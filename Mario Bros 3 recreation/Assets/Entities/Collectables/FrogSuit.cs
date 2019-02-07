@@ -8,6 +8,6 @@ public class FrogSuit : Collectable {
     }
     
     protected override void OnScreen() {
-
+        base.OnScreen();
     }
 }

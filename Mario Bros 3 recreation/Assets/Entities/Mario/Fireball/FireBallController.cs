@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireBallController : Entity {
+public class FireBallController : Agent {
     public bool IsFacingRight {
         get {
             return isFacingRight;
@@ -12,7 +12,7 @@ public class FireBallController : Entity {
                 Flip();
             }
             isFacingRight = value;
-        }
+        }   
     }
 
     public float maxYSpeed;
@@ -22,7 +22,8 @@ public class FireBallController : Entity {
     private Meter YVel;
     private float XVel;
     
-    private void Awake() {
+    protected override void Awake() {
+        base.Awake();
         isFacingRight = false;
         IsFacingRight = true;
     }
@@ -34,6 +35,9 @@ public class FireBallController : Entity {
 
         StartCoroutine("FireballAnim");
     }
+
+    // do nothing for the following
+    protected override void CheckForFlip() { }
 
     IEnumerator FireballAnim() {
         while (true) {
@@ -47,7 +51,7 @@ public class FireBallController : Entity {
         }
     }
 
-    private void FixedUpdate() {
+    protected override void OnScreen() {
 
         YVel.Amount -= YAccel * Time.fixedDeltaTime;
 
@@ -63,4 +67,16 @@ public class FireBallController : Entity {
         
         rb.velocity = new Vector2(XVel, YVel.Amount);
     }
+    
+    protected override void OffScreen() {
+        Destroy(gameObject);
+    }
+
+    private void OnCollisionEnter2D(Collision2D coll) {
+        if (cc.IsLeftColliding || cc.IsRightColliding) {
+            Destroy(gameObject);
+        }
+    }
 }
+ 
+ 

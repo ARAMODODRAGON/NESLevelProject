@@ -2,9 +2,9 @@ fileFormatVersion: 2
 guid: 825bd413ca604b94a883380bbd5dc371
 TextureImporter:
   fileIDToRecycleName:
-    21300000: EnemiesSMB3_0
-    21300002: EnemiesSMB3_1
-    21300004: EnemiesSMB3_2
+    21300000: goomba1
+    21300002: goomba2
+    21300004: goomba3
     21300006: EnemiesSMB3_3
     21300008: EnemiesSMB3_4
     21300010: EnemiesSMB3_5
@@ -1289,7 +1289,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: EnemiesSMB3_0
+      name: goomba1
       rect:
         serializedVersion: 2
         x: 0
@@ -1309,7 +1309,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EnemiesSMB3_1
+      name: goomba2
       rect:
         serializedVersion: 2
         x: 16
@@ -1329,7 +1329,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EnemiesSMB3_2
+      name: goomba3
       rect:
         serializedVersion: 2
         x: 32

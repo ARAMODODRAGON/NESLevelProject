@@ -50,17 +50,17 @@ TextureImporter:
     21300090: TilesSMB3_45
     21300092: TilesSMB3_46
     21300094: TilesSMB3_47
-    21300096: TilesSMB3_48
-    21300098: TilesSMB3_49
-    21300100: TilesSMB3_50
-    21300102: TilesSMB3_51
+    21300096: Brick1
+    21300098: Brick2
+    21300100: Brick3
+    21300102: Brick4
     21300104: TilesSMB3_52
     21300106: TilesSMB3_53
     21300108: TilesSMB3_54
     21300110: TilesSMB3_55
     21300112: TilesSMB3_56
     21300114: TilesSMB3_57
-    21300116: TilesSMB3_58
+    21300116: popped
     21300118: TilesSMB3_59
     21300120: TilesSMB3_60
     21300122: TilesSMB3_61
@@ -453,7 +453,7 @@ TextureImporter:
     21300896: TilesSMB3_448
     21300898: TilesSMB3_449
     21300900: TilesSMB3_450
-    21300902: TilesSMB3_451
+    21300902: BrickBit
     21300904: TilesSMB3_452
     21300906: TilesSMB3_453
     21300908: TilesSMB3_454
@@ -2322,7 +2322,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TilesSMB3_48
+      name: Brick1
       rect:
         serializedVersion: 2
         x: 1038
@@ -2342,7 +2342,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TilesSMB3_49
+      name: Brick2
       rect:
         serializedVersion: 2
         x: 1055
@@ -2362,7 +2362,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TilesSMB3_50
+      name: Brick3
       rect:
         serializedVersion: 2
         x: 1072
@@ -2382,7 +2382,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TilesSMB3_51
+      name: Brick4
       rect:
         serializedVersion: 2
         x: 1089
@@ -2522,7 +2522,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TilesSMB3_58
+      name: popped
       rect:
         serializedVersion: 2
         x: 1208
@@ -9682,15 +9682,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TilesSMB3_451
+      name: BrickBit
       rect:
         serializedVersion: 2
         x: 1089
         y: 246
         width: 8
         height: 9
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 8
+      pivot: {x: 1, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

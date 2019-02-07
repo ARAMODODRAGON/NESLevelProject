@@ -55,11 +55,11 @@ public class Joystick {
 
                 if (x >= Deadzone) {
                     axis.x = Input.GetAxisRaw(AllXInputs[i]);
-                    axis.y = Input.GetAxisRaw(AllXInputs[i]);
+                    axis.y = Input.GetAxisRaw(AllYInputs[i]);
                     break;
                 } else if (y >= Deadzone) {
                     axis.x = Input.GetAxisRaw(AllXInputs[i]);
-                    axis.y = Input.GetAxisRaw(AllXInputs[i]);
+                    axis.y = Input.GetAxisRaw(AllYInputs[i]);
                     break;
                 }
             }
@@ -73,7 +73,7 @@ public class Joystick {
 
         if (Axis.x > 0.0f) Right = true;
         else Right = false;
-
+        
         if (Axis.y < 0.0f) Down = true;
         else Down = false;
 

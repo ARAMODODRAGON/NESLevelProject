@@ -3,18 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Mushroom : Collectable {
-    private bool isInBlock;
-
     private float speed;
-    private float riseLength;
-
+    
     protected override void Start() {
         base.Start();
         itemName = "Mushroom";
-        isInBlock = true;
-        rb.simulated = false;
         speed = 3.0f;
-        riseLength = 0.9f;
     }
 
     protected override void FoundPlayer() {
@@ -22,21 +16,9 @@ public class Mushroom : Collectable {
     }
 
     protected override void OnScreen() {
-        if (isInBlock) {
-            RunExitBlockAnimation();
-        } else {
+        base.OnScreen();
+        if (!isInBlock) {
             MoveHorizontal();
-        }
-    }
-
-    private void RunExitBlockAnimation() {
-        Vector2 newPos = transform.position;
-        newPos.y += Time.fixedDeltaTime/ riseLength;
-        transform.position = newPos;
-
-        if(transform.position.y >= (initialPosition.y + 1.0f)) {
-            isInBlock = false;
-            rb.simulated = true;
         }
     }
 
@@ -50,4 +32,5 @@ public class Mushroom : Collectable {
         vel.y = rb.velocity.y;
         rb.velocity = vel;
     }
+    
 }

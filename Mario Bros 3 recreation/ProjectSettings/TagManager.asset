@@ -6,8 +6,7 @@ TagManager:
   tags:
   - PowerUp
   - EntityCollider
-  - CamBoundA
-  - CamBoundB
+  - Fireball
   layers:
   - Default
   - TransparentFX
@@ -20,9 +19,9 @@ TagManager:
   - EntityCollider
   - Entity
   - MainCamera
-  - CameraBounds
+  - Fireball
   - Platform
-  - 
+  - Player
   - 
   - 
   - 
@@ -53,6 +52,9 @@ TagManager:
     locked: 0
   - name: Entity
     uniqueID: 13708501
+    locked: 0
+  - name: TileObjects
+    uniqueID: 2775348239
     locked: 0
   - name: Player
     uniqueID: 79852875

@@ -15,7 +15,8 @@ GameObject:
   - component: {fileID: 61436812060112168}
   - component: {fileID: 9173313270539455822}
   - component: {fileID: 7877079837203175758}
-  m_Layer: 0
+  - component: {fileID: 1397169257031005}
+  m_Layer: 13
   m_Name: Mario
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -72,7 +73,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 79852875
-  m_SortingLayer: 4
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300008, guid: f10bb7e1ea59cf14388f5097c0c863da, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -193,6 +194,7 @@ MonoBehaviour:
   trigSmall: {fileID: 9173313270539455822}
   hitBig: {fileID: 69575116928651674}
   hitSmall: {fileID: 6866087880615775156}
+  isTransitioning: 0
   maxWalkSpeed: 4.8
   maxRunSpeed: 7.46
   maxPSpeed: 10.1
@@ -207,6 +209,18 @@ MonoBehaviour:
   extraJumpHeight: 1.1
   fireBall: {fileID: 8540503640258809394, guid: 33ccdb0872a5c1240a664875ce1a0841,
     type: 3}
+--- !u!114 &1397169257031005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1397169257031004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84d4e9f35771e2b40b8ef86a1472ed88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!61 &69575116928651674
 BoxCollider2D:
   m_ObjectHideFlags: 0
