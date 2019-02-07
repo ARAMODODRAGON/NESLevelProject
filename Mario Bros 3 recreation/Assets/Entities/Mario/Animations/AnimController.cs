@@ -3,19 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AnimController : MonoBehaviour {
+    public float flashTrasitionTime;
+    public int numberOfFlashes;
+
     private Player ps;
     private Animator anim;
+    private Rigidbody2D rb;
     private int lastPow;
-
-    private readonly float dw = 0.9f;
 
     private void Start() {
         ps = GetComponent<Player>();
+        lastPow = ps.currentPow;
         anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
         for (int i = 1; i < anim.layerCount; i++) {
             anim.SetLayerWeight(i, 0.0f);
         }
-        anim.SetLayerWeight(ps.currentPow, dw);
+        anim.SetLayerWeight(ps.currentPow, 1.0f);
     }
 
     private void Update() {
@@ -29,31 +33,68 @@ public class AnimController : MonoBehaviour {
 
             //then set the apropriate layer to a weight of 1
             switch (curPow) {
+                case 0: {
+                    Debug.Log("Hey");
+                    StartCoroutine(DeathAnimation());
+                    break;
+                }
                 case 1: {
-                    anim.SetLayerWeight(1, dw);
+                    StartCoroutine(FlashTransition(curPow));
                     break;
                 }
                 case 2: {
-                    anim.SetLayerWeight(2, dw);
+                    StartCoroutine(FlashTransition(curPow));
                     break;
                 }
                 case 3: {
-                    anim.SetLayerWeight(3, dw);
+                    StartCoroutine(FlashTransition(curPow));
                     break;
                 }
                 case 4: {
-                    anim.SetLayerWeight(4, dw);
+                    StartCoroutine(FlashTransition(curPow));
                     break;
                 }
                 case 5: {
-                    anim.SetLayerWeight(5, dw);
+                    StartCoroutine(FlashTransition(curPow));
                     break;
                 }
                 default:
                     break;
             }
         }
+    }
 
-        lastPow = curPow;
+    IEnumerator FlashTransition(int ToThislayer) {
+        ps.isTransitioning = true;
+        Debug.Log(lastPow + ", " + ToThislayer);
+
+        for (int i = 0; i <= numberOfFlashes; i++) {
+            anim.SetLayerWeight(lastPow, 1.0f);
+            anim.SetLayerWeight(ToThislayer, 0.0f);
+            yield return new WaitForSeconds(flashTrasitionTime);
+
+            anim.SetLayerWeight(lastPow, 0.0f);
+            anim.SetLayerWeight(ToThislayer, 1.0f);
+            if (i != numberOfFlashes) yield return new WaitForSeconds(flashTrasitionTime);
+        }
+
+        ps.isTransitioning = false;
+
+        lastPow = ToThislayer;
+    }
+
+    IEnumerator DeathAnimation() {
+        lastPow = 0;
+        transform.DetachChildren();
+        anim.SetLayerWeight(11, 1f);
+        rb.velocity = new Vector2(0f, 0f);
+        yield return new WaitForSeconds(1f);
+        rb.velocity = new Vector2(0f, 8f);
+        while (rb.velocity.y > -8) {
+            Vector2 newVel = rb.velocity;
+            newVel.y -= Time.fixedDeltaTime * 16f;
+            rb.velocity = newVel;
+            yield return new WaitForFixedUpdate();
+        }
     }
 }

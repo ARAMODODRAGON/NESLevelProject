@@ -45,14 +45,14 @@ public abstract class Agent : Entity {
             canAutoflip = true;
         }
         initialPosition = transform.position;
-        
+        cameraT = GameObject.FindGameObjectWithTag("MainCamera").transform;
+
         //gets the distance to the player
         Vector3 distanceToCamera = transform.position - cameraT.position;
         //sets the x and y to their absolute values
         distanceToCamera.x = Mathf.Abs(distanceToCamera.x);
         distanceToCamera.y = Mathf.Abs(distanceToCamera.y);
-        cameraT = GameObject.FindGameObjectWithTag("MainCamera").transform;
-        if (distanceToCamera.x > 8.0f || distanceToCamera.y > 8.0f) {
+        if (distanceToCamera.x > 8.5f || distanceToCamera.y > 8.5f) {
             isOnScreen = false;
         } else {
             isOnScreen = true;
@@ -82,7 +82,7 @@ public abstract class Agent : Entity {
             CheckForFlip();
         }
         //checks the distances if they are too far
-        if (distanceToCamera.x > 8.0f || distanceToCamera.y > 8.0f) {
+        if (distanceToCamera.x > 8.5f || distanceToCamera.y > 8.5f) {
             if (isOnScreen) ExitedScreen();
             isOnScreen = false;
             OffScreen();

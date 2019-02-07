@@ -72,8 +72,15 @@ public class FireBallController : Agent {
         Destroy(gameObject);
     }
 
-    private void OnCollisionEnter2D(Collision2D coll) {
+    private void OnCollisionEnter2D(Collision2D col) {
         if (cc.IsLeftColliding || cc.IsRightColliding) {
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D col) {
+        if (col.tag.Equals("Enemy")) {
+            col.gameObject.GetComponent<Enemies>().TakeDamage();
             Destroy(gameObject);
         }
     }

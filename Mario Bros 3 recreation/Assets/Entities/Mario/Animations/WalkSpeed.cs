@@ -9,6 +9,10 @@ public class WalkSpeed : StateMachineBehaviour {
     public float PSpeed = 1.0f;
 
     public override void OnStateUpdate(Animator anim, AnimatorStateInfo stateInfo, int layer) {
+        if (Player.instance.isTransitioning) {
+            anim.speed = 0.0f;
+            return;
+        }
         if (anim.GetBool("IsCrouching") || anim.GetBool("IsAttacking") && anim.GetBool("CanAttack")) {
             anim.speed = 1.0f;
             return;

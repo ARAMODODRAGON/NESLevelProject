@@ -47,6 +47,7 @@ public class Player : Entity {
     public float minJumpHeight;
     public float extraJumpHeight;
     private float extraJumptime;
+    public float bounceHeight;
 
     private Meter XVel;
     private Meter YTime;
@@ -61,6 +62,10 @@ public class Player : Entity {
 
     //=============================================================================================================================================//
 
+    private void Awake() {
+        curPowerUp = Powerups.small;
+    }
+
     protected override void Start() {
         if (instance != null) {
             Debug.LogError("There is already one player in the scene");
@@ -73,7 +78,6 @@ public class Player : Entity {
         IsSmall = true;
         isFacingRight = false;
         Flip();
-        curPowerUp = Powerups.small;
 
         //start setting up the directional inputs and button inputs
         string[] JoyX = new string[3];
@@ -148,15 +152,26 @@ public class Player : Entity {
         }
     }
 
-    public void TakeDamage() {
-
+    public void TakeDamage(Enemies e) {
+        if (YVel < 0.0f) {
+            e.TakeDamage();
+            YVel = bounceHeight / riseTime;
+            YTime.Amount = YTime.Min;
+        } else {
+            if (curPowerUp == Powerups.fire || curPowerUp == Powerups.leaf || curPowerUp == Powerups.frog) {
+                curPowerUp = Powerups.big;
+            } else if (curPowerUp == Powerups.big) {
+                curPowerUp = Powerups.small;
+            } else {
+                curPowerUp = Powerups.dead;
+            }
+        }
     }
 
     //=============================================================================================================================================//
 
     private void FixedUpdate() {
-
-        if (!isTransitioning) {
+        if (!isTransitioning && curPowerUp != Powerups.dead) {
 
             //do this once in the begining so i dont have to check multiple times
             axis.getDir();
@@ -180,7 +195,7 @@ public class Player : Entity {
 
             //apply the new velocity
             rb.velocity = new Vector3(XVel.Amount, YVel, 0.0f);
-        } else {
+        } else if (isTransitioning) {
             rb.velocity = Vector3.zero;
         }
 
@@ -208,7 +223,6 @@ public class Player : Entity {
     
     private void Attack() {
         if (curPowerUp == Powerups.fire && GameObject.FindGameObjectsWithTag("Fireball").Length < 3) {
-            Debug.Log("Hey");
             Vector3 spawnPos = hitBig.bounds.center;
             spawnPos.y += hitBig.bounds.extents.y / 2.0f;
             GameObject ob = Instantiate(fireBall, spawnPos, Quaternion.Euler(Vector3.zero));
