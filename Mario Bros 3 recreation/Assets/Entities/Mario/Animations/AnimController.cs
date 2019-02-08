@@ -66,7 +66,6 @@ public class AnimController : MonoBehaviour {
 
     IEnumerator FlashTransition(int ToThislayer) {
         ps.isTransitioning = true;
-        Debug.Log(lastPow + ", " + ToThislayer);
 
         for (int i = 0; i <= numberOfFlashes; i++) {
             anim.SetLayerWeight(lastPow, 1.0f);

@@ -36,7 +36,6 @@ public abstract class Enemies : Agent {
         } else {
             canBecomeActive = false;
         }
-        Debug.Log(canBecomeActive);
     }
 
     protected override void EnteredScreen() {
