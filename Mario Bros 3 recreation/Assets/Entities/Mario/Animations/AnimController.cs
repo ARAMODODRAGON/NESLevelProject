@@ -34,7 +34,6 @@ public class AnimController : MonoBehaviour {
             //then set the apropriate layer to a weight of 1
             switch (curPow) {
                 case 0: {
-                    Debug.Log("Hey");
                     StartCoroutine(DeathAnimation());
                     break;
                 }

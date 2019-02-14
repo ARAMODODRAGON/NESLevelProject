@@ -9,14 +9,11 @@ public class Mushroom : Collectable {
         base.Start();
         itemName = "Mushroom";
         speed = 3.0f;
-    }
-
-    protected override void FoundPlayer() {
         isFacingRight = !player.IsFacingRight();
     }
-
-    protected override void OnScreen() {
-        base.OnScreen();
+    
+    protected override void ActiveUpdate() {
+        base.ActiveUpdate();
         if (!isInBlock) {
             MoveHorizontal();
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour {
+    public static CameraController instance;
     //specific for different colored backgrounds
     public enum BackgroundColors { blue, yellow }
     public BackgroundColors CurrentBackgroundColor;
@@ -19,7 +20,17 @@ public class CameraController : MonoBehaviour {
     private Bounds[] bounds;
 
     private int currentBound;
-    
+
+    private void Awake() {
+        //there can only be one instance of the camera
+        if (instance != null) {
+            Debug.LogError("There is already one camera in the scene");
+            Destroy(gameObject);
+        } else {
+            instance = this;
+        }
+    }
+
     private void Start() {
         if (CurrentBackgroundColor == BackgroundColors.blue) {
             GetComponent<Camera>().backgroundColor = blue;

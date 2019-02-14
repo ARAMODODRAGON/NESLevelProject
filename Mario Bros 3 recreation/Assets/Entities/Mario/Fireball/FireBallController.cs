@@ -51,7 +51,7 @@ public class FireBallController : Agent {
         }
     }
 
-    protected override void OnScreen() {
+    protected override void ActiveUpdate() {
 
         YVel.Amount -= YAccel * Time.fixedDeltaTime;
 
@@ -68,7 +68,7 @@ public class FireBallController : Agent {
         rb.velocity = new Vector2(XVel, YVel.Amount);
     }
     
-    protected override void OffScreen() {
+    protected override void InactiveUpdate() {
         Destroy(gameObject);
     }
 
@@ -80,7 +80,7 @@ public class FireBallController : Agent {
 
     private void OnTriggerEnter2D(Collider2D col) {
         if (col.tag.Equals("Enemy")) {
-            col.gameObject.GetComponent<Enemies>().TakeDamage();
+            col.gameObject.GetComponent<Enemies>().TakeDamage("fire");
             Destroy(gameObject);
         }
     }

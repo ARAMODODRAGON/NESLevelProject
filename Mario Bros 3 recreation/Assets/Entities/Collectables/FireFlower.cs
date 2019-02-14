@@ -7,8 +7,5 @@ public class FireFlower : Collectable {
         base.Start();
         itemName = "FireFlower";
     }
-
-    protected override void OnScreen() {
-        base.OnScreen();
-    }
+    
 }

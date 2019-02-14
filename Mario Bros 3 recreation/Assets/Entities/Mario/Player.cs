@@ -64,15 +64,15 @@ public class Player : Entity {
 
     private void Awake() {
         curPowerUp = Powerups.small;
-    }
-
-    protected override void Start() {
         if (instance != null) {
             Debug.LogError("There is already one player in the scene");
             Destroy(gameObject);
         } else {
             instance = this;
         }
+    }
+
+    protected override void Start() {
         base.Start();
         //start small
         IsSmall = true;
@@ -154,7 +154,7 @@ public class Player : Entity {
 
     public void TakeDamage(Enemies e) {
         if (YVel < 0.0f) {
-            e.TakeDamage();
+            e.TakeDamage("Stomp");
             YVel = bounceHeight / riseTime;
             YTime.Amount = YTime.Min;
         } else {

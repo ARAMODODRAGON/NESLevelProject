@@ -19,7 +19,7 @@ public abstract class Collectable : Agent {
 
     protected override void Awake() {
         base.Awake();
-        goUp = true;
+        goUp = false;
     }
 
     protected override void Start() {
@@ -30,7 +30,7 @@ public abstract class Collectable : Agent {
         rb.simulated = false;
     }
 
-    protected override void OnScreen() {
+    protected override void ActiveUpdate() {
         if (isInBlock && goUp) {
             RunExitBlockAnimation();
         }
@@ -41,13 +41,13 @@ public abstract class Collectable : Agent {
         newPos.y += Time.fixedDeltaTime / riseLength;
         transform.position = newPos;
 
-        if (transform.position.y >= (initialPosition.y + 1.0f)) {
+        if (transform.position.y >= (SpawnPosition.y + 1.0f)) {
             isInBlock = false;
             rb.simulated = true;
         }
     }
 
-    protected override void OffScreen() {
+    protected override void InactiveUpdate() {
         //delete the PowerUp
         //this is overriden by the coin as it is not a powerup but is a collectable
         Destroy(gameObject);
