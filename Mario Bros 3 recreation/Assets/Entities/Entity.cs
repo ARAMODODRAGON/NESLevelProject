@@ -9,14 +9,20 @@ using UnityEngine;
 public abstract class Entity : MonoBehaviour {
     // components which all entities need
     protected Rigidbody2D rb;
-    protected CollCheck cc;
+    protected EntityCollider ec;
 
     protected bool isFacingRight;
 
     protected virtual void Start() {
         //get components
-        cc = GetComponentInChildren<CollCheck>();
+        ec = GetComponent<EntityCollider>();
         rb = GetComponent<Rigidbody2D>();
+    }
+
+    protected virtual void FixedUpdate() {
+        foreach (Collider2D col in ec.results) {
+            if (col != null) OnOverlap(col);
+        }
     }
 
     protected void Flip() {
@@ -26,5 +32,6 @@ public abstract class Entity : MonoBehaviour {
         transform.localScale = scale;
         isFacingRight = !isFacingRight;
     }
-    
+
+    protected virtual void OnOverlap(Collider2D col) { }
 }

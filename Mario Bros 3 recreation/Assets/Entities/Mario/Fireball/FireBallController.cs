@@ -55,7 +55,7 @@ public class FireBallController : Agent {
 
         YVel.Amount -= YAccel * Time.fixedDeltaTime;
 
-        if (cc.IsGrounded && YVel.Amount <= 0.0f) {
+        if (ec.IsGrounded && YVel.Amount <= 0.0f) {
             YVel.Amount = YVel.Max;
         }
 
@@ -73,12 +73,12 @@ public class FireBallController : Agent {
     }
 
     private void OnCollisionEnter2D(Collision2D col) {
-        if (cc.IsLeftColliding || cc.IsRightColliding) {
+        if (ec.IsLeft || ec.IsRight) {
             Destroy(gameObject);
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D col) {
+    protected override void OnOverlap(Collider2D col) {
         if (col.tag.Equals("Enemy")) {
             col.gameObject.GetComponent<Enemies>().TakeDamage("fire");
             Destroy(gameObject);

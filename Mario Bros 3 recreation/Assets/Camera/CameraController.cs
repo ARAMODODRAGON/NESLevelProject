@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour {
     public static CameraController instance;
+    public Vector2 ScreenSize { get; private set; }
     //specific for different colored backgrounds
     public enum BackgroundColors { blue, yellow }
     public BackgroundColors CurrentBackgroundColor;
@@ -29,6 +30,9 @@ public class CameraController : MonoBehaviour {
         } else {
             instance = this;
         }
+
+        //this is gotten by all agents and is modified here to have the same number across
+        ScreenSize = new Vector2(10f, 10f);
     }
 
     private void Start() {

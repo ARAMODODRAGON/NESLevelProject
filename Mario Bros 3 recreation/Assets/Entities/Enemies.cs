@@ -1,36 +1,47 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*
+ * I will be adding a list of all the classes that inherits from this one
+ * 
+ */ 
 public abstract class Enemies : Agent {
-    protected BoxCollider2D ChildCol;
     protected SpriteRenderer sp;
+
+    protected int hitPoints;
+
+    protected override void Awake() {
+        base.Awake();
+        hitPoints = 1; ///default value
+    }
 
     protected override void Start() {
         base.Start();
-        ChildCol = GetComponentInChildren<BoxCollider2D>();
         sp = GetComponent<SpriteRenderer>();
     }
 
     public virtual void TakeDamage(string killType) {
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 
     //enemies will reset position when going off screen
     protected override void OnDeactivate() {
         transform.position = SpawnPosition;
-        isActive = false;
-        ChildCol.enabled = false;
+        col.enabled = false;
         sp.enabled = false;
+        rb.simulated = false;
+        ///so when the enemy resets and is back on screen, it will stay inactive
+        if (CheckIsOnScreen) isActive = true;
     }
 
     protected override void OnActivate() {
-        isActive = true;
-        ChildCol.enabled = true;
+        rb.simulated = true;
+        col.enabled = true;
         sp.enabled = true;
     }
 
-    private void OnTriggerEnter2D(Collider2D col) {
+    protected override void OnOverlap(Collider2D col) {
+        if (hitPoints == 0) return;
         if (col.tag.Equals("Player")) {
             Player.instance.TakeDamage(this);
         }

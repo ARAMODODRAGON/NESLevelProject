@@ -7,10 +7,8 @@ public class Player : Entity {
     public static Player instance;
 
     //the big and small hitboxes for mario
-    [SerializeField] protected Collider2D trigBig;
-    [SerializeField] protected Collider2D trigSmall;
-    [SerializeField] protected Collider2D hitBig;
-    [SerializeField] protected Collider2D hitSmall;
+    [SerializeField] protected BoxCollider2D hitBig;
+    [SerializeField] protected BoxCollider2D hitSmall;
 
     // inputs
     private Joystick axis;
@@ -116,17 +114,20 @@ public class Player : Entity {
 
     private bool IsSmall {
         get {
-            // if both small colliders are enabled and big colliders are disabled then return true
-            return hitSmall.enabled && trigSmall.enabled && !trigBig && !hitBig.enabled;
+            // if the small collider is enabled and the big collider is disabled
+            return hitSmall.enabled && !hitBig.enabled;
         }
         set {
-            //if true then enable the small colliders
-            trigSmall.enabled = value;
+            //if true then enable the small collider
             hitSmall.enabled = value;
-            //if true then disable the big colliders
-            trigBig.enabled = !value;
+            //if true then disable the big collider
             hitBig.enabled = !value;
             //if false then the reverse happens
+            if (value) {
+                ec.box = hitSmall;
+            } else {
+                ec.box = hitBig;
+            }
         }
     }
 
@@ -135,7 +136,7 @@ public class Player : Entity {
 
     public Vector3 center {
         get {
-            return trigSmall.bounds.center;
+            return hitSmall.bounds.center;
         }
     }
 
@@ -154,7 +155,7 @@ public class Player : Entity {
 
     public void TakeDamage(Enemies e) {
         if (YVel < 0.0f) {
-            e.TakeDamage("Stomp");
+            e.TakeDamage("stomp");
             YVel = bounceHeight / riseTime;
             YTime.Amount = YTime.Min;
         } else {
@@ -170,7 +171,8 @@ public class Player : Entity {
 
     //=============================================================================================================================================//
 
-    private void FixedUpdate() {
+    protected override void FixedUpdate() {
+        base.FixedUpdate();
         if (!isTransitioning && curPowerUp != Powerups.dead) {
 
             //do this once in the begining so i dont have to check multiple times
@@ -201,6 +203,7 @@ public class Player : Entity {
 
         //updates the properties in the animation controller
         UpdateAnimVariables();
+        
     }
 
     //=============================================================================================================================================//
@@ -242,16 +245,16 @@ public class Player : Entity {
     private void CheckForFlip() {
         //only flips the player if their holding a direction and also is moving in that direction
         //eg. one direction is held but mario is sliding the other way so mario wont flip
-        if (isFacingRight && axis.Left && (XVel.Amount <= 0.0f || !cc.IsGrounded)) Flip();
-        if (!isFacingRight && axis.Right && (XVel.Amount >= 0.0f || !cc.IsGrounded)) Flip();
+        if (isFacingRight && axis.Left && (XVel.Amount <= 0.0f || !ec.IsGrounded)) Flip();
+        if (!isFacingRight && axis.Right && (XVel.Amount >= 0.0f || !ec.IsGrounded)) Flip();
 
         //this is for when they land and they arnt facing the right direction
-        if (XVel.Amount < 0.0f && isFacingRight && cc.IsGrounded) Flip();
-        if (XVel.Amount > 0.0f && !isFacingRight && cc.IsGrounded) Flip();
+        if (XVel.Amount < 0.0f && isFacingRight && ec.IsGrounded) Flip();
+        if (XVel.Amount > 0.0f && !isFacingRight && ec.IsGrounded) Flip();
     }
 
     private void CheckForCrouch() {
-        if (curPowerUp != Powerups.small && cc.IsGrounded) {
+        if (curPowerUp != Powerups.small && ec.IsGrounded) {
             if (axis.Down && !axis.Left && !axis.Right) {
                 isCrouching = true;
                 IsSmall = true;
@@ -290,9 +293,9 @@ public class Player : Entity {
 
     private void HandleXMovement() {
         //if mario hits a wall then the speed gets set to 0
-        if (cc.IsRightColliding && XVel.Amount > 0.0f) {
+        if (ec.IsRight && XVel.Amount > 0.0f) {
             XVel.Amount = 0.0f;
-        } else if (cc.IsLeftColliding && XVel.Amount < 0.0f) {
+        } else if (ec.IsLeft && XVel.Amount < 0.0f) {
             XVel.Amount = 0.0f;
         }
 
@@ -314,7 +317,7 @@ public class Player : Entity {
 
     private void calculateJumpHeight() {
         //calculates jump height based off run speed
-        if (cc.IsGrounded) {
+        if (ec.IsGrounded) {
             extraJumptime = extraJumpHeight * XVel.Abs / maxPSpeed * (riseTime / jumpHeight);
             if (YTime.Amount >= YTime.Max - 0.01f) {
                 YTime.Amount = YTime.Max;
@@ -325,7 +328,7 @@ public class Player : Entity {
 
     private void HandleYMovement() {
         //reset the timer if player has pressed jump
-        if (aBut.ButtonDown && cc.IsGrounded) {
+        if (aBut.ButtonDown && ec.IsGrounded) {
             YTime.Amount = 0.0f;
             YVel = jumpHeight / riseTime;
         }
@@ -342,7 +345,7 @@ public class Player : Entity {
         }
 
         //this end the timer imediately if the players head hits something
-        if (cc.IsTopColliding) {
+        if (ec.IsCeiling) {
             YTime.Amount = YTime.Max;
             YVel = -fallSpeed;
         }
@@ -351,7 +354,7 @@ public class Player : Entity {
         if (YTime.Amount >= YTime.Max) {
             YVel -= Time.fixedDeltaTime * fallAccel;
             if (rb.velocity.y < -fallSpeed) YVel = -fallSpeed / 2;
-            if (cc.IsGrounded && YVel <= 0.0f) YVel = 0.0f;
+            if (ec.IsGrounded && YVel <= 0.0f) YVel = 0.0f;
         }
     }
 
@@ -359,10 +362,8 @@ public class Player : Entity {
 
     private void UpdateAnimVariables() {
         //tell if marios on the ground
-        anim.SetBool("IsGrounded", cc.IsGrounded && YVel <= 0.0f);
-
-        //the following are dependent on certain values
-
+        anim.SetBool("IsGrounded", ec.IsGrounded && YVel <= 0.0f);
+        
         //this is for the diffrent run speeds
         if (XVel.Abs >= maxPSpeed) {
             anim.SetInteger("Speed", 4);

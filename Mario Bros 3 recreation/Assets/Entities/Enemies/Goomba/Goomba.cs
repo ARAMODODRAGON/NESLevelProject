@@ -29,11 +29,6 @@ public class Goomba : Enemies {
         }
     }
 
-    protected override void OnDeactivate() {
-        base.OnDeactivate();
-        rb.velocity = Vector2.zero;
-    }
-
     protected override void ActiveUpdate() {
         if (isFacingRight) {
             rb.velocity = new Vector2(speed, rb.velocity.y);
@@ -46,10 +41,11 @@ public class Goomba : Enemies {
         if (killType.Equals("stomp")) {
             ass.play = false;
             rb.simulated = false;
-            ChildCol.enabled = false;
             sp.sprite = DeadGoomb;
-            StartCoroutine(WaitForDeath());
+            hitPoints = 0;
+            Destroy(gameObject, timeToDeath);
         } else if (killType.Equals("fire")) {
+            hitPoints = 0;
             ass.play = false;
             Destroy(transform.GetChild(0).gameObject);
             GetComponent<BoxCollider2D>().enabled = false;
@@ -60,10 +56,5 @@ public class Goomba : Enemies {
         } else {
             base.TakeDamage(killType);
         }
-    }
-
-    IEnumerator WaitForDeath() {
-        yield return new WaitForSeconds(timeToDeath);
-        Destroy(gameObject);
     }
 }

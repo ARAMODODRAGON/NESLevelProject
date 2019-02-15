@@ -83,7 +83,9 @@ public class AnimController : MonoBehaviour {
 
     IEnumerator DeathAnimation() {
         lastPow = 0;
-        transform.DetachChildren();
+        foreach (BoxCollider2D col in GetComponents<BoxCollider2D>()) {
+            col.isTrigger = true;
+        }
         anim.SetLayerWeight(11, 1f);
         rb.velocity = new Vector2(0f, 0f);
         yield return new WaitForSeconds(1f);

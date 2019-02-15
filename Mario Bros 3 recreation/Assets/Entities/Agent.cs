@@ -7,14 +7,15 @@ using UnityEngine;
  * Collectable
  * Enemies
  */
+ 
 public class Agent : Entity {
-    // player instance and transform
+    // components
     protected Player player;
-    new protected CameraController camera; // the new keyword is to hide the inherited camera component as its not required here
+    protected CameraController cameraInst;
+    protected BoxCollider2D col;
     // wether or not this agent will automatically flip when hitting a wall
     protected bool CanCheckForFlip;
     protected bool isActive;
-    private bool isOnScreen;
 
     protected bool destroyOnExit;
 
@@ -24,6 +25,7 @@ public class Agent : Entity {
     //===============================================================================================================================================//
 
     protected virtual void Awake() {
+        col = GetComponent<BoxCollider2D>();
         isFacingRight = false;
         isActive = true;
         destroyOnExit = false;
@@ -39,82 +41,92 @@ public class Agent : Entity {
         //the instance is gotten in awake in the player script so agents are all able to get it from start
         player = Player.instance;
         //this also applies to the camera
-        camera = CameraController.instance;
+        cameraInst = CameraController.instance;
+
+        //does and initial check to see if is on screen to decide if it should start active
 
         //gets the distance to the player
-        Vector3 distanceToCamera = transform.position - camera.transform.position;
+        Vector3 distanceToCamera = transform.position - cameraInst.transform.position;
         //sets the x and y to their absolute values
         distanceToCamera.x = Mathf.Abs(distanceToCamera.x);
         distanceToCamera.y = Mathf.Abs(distanceToCamera.y);
-        if (distanceToCamera.x > 8.5f || distanceToCamera.y > 8.5f) {
-            isOnScreen = false;
+        if (distanceToCamera.x > cameraInst.ScreenSize.x || distanceToCamera.y > cameraInst.ScreenSize.y) {
+            isActive = false;
         } else {
-            isOnScreen = true;
+            isActive = true;
         }
     }
 
     //===============================================================================================================================================//
 
     ///the way this is gonna work is that if one agent is not going to use a function then it can just override fixedupdate and run the functions it needs
-    protected void FixedUpdate() {
+    protected override void FixedUpdate() {
+        base.FixedUpdate();
+
         //flip
         CheckForFlip();
-        
+
         //checks if this entity is visible on screen and runs the event functions
-        CheckIsOnScreen();
+        CallEvents();
     }
 
     //===============================================================================================================================================//
 
+    protected bool CheckIsOnScreen {
+        get {
+            //gets the distance to the camera
+            Vector3 distanceToCamera = transform.position - cameraInst.transform.position;
+            //sets the x and y to their absolute values
+            distanceToCamera.x = Mathf.Abs(distanceToCamera.x);
+            distanceToCamera.y = Mathf.Abs(distanceToCamera.y);
+
+            return !(distanceToCamera.x > cameraInst.ScreenSize.x || distanceToCamera.y > cameraInst.ScreenSize.y);
+        }
+    }
+
     protected virtual void CheckForFlip() {
         //flips the agent automatically using collision
-        if (isFacingRight && cc.IsRightColliding) {
+        if (isFacingRight && ec.IsRight) {
             Flip();
-        } else if (!isFacingRight && cc.IsLeftColliding) {
+        } else if (!isFacingRight && ec.IsLeft) {
             Flip();
         }
     }
 
-    protected virtual void CheckIsOnScreen() {
-        //gets the distance to the camera
-        Vector3 distanceToCamera = transform.position - camera.transform.position;
-        //sets the x and y to their absolute values
-        distanceToCamera.x = Mathf.Abs(distanceToCamera.x);
-        distanceToCamera.y = Mathf.Abs(distanceToCamera.y);
+    //checks if is onscreen or not and calls each function accordingly
+    ///ActiveUpdate and InactiveUpdate are called every fixed update when the entity is on/offscreen
+    ///OnDeactivate is when it leaves the screen
+    ///OnActivate is when it appears on screen
+    protected virtual void CallEvents() {
+        if (!CheckIsOnScreen) {
 
-        //checks if is onscreen or not and calls each function accordingly
-        ///OnScreen and OffScreen are obvious
-        ///ExitedScreen is when it leaves the screen
-        ///EnteredScreen is when it appears on screen
-        if (distanceToCamera.x > 10f || distanceToCamera.y > 10f) {
             ///call this only once it leaves the screen
-            if (isOnScreen) OnDeactivate();
-
-            ///this is if the agent is teleported onto the screen before it calls off screen
-            ///this prevents an enemy, for example, from suddenly appearing on screen
-            if (distanceToCamera.x <= 10f || distanceToCamera.y <= 10f) {
-                isOnScreen = true;
-            } else {
-                isOnScreen = false;
+            if (isActive) {
+                isActive = false; ///prevents from running more than once
+                OnDeactivate();
             }
 
             ///called every fixed update if is off screen
-            InactiveUpdate();
+            if (!isActive) InactiveUpdate();
 
             ///used to destroy an object if it leaves the screen
             if (destroyOnExit) Destroy(gameObject);
-
         } else {
-            if (!isOnScreen) OnActivate();
-            isOnScreen = true;
+
+            ///call when entering the screen
+            if (!isActive) {
+                isActive = true; ///prevents from running more than once
+                OnActivate();
+            }
+
+            ///called every fixed update if is on screen
             if (isActive) ActiveUpdate();
         }
     }
 
-    protected virtual void OnDeactivate() {}
-    protected virtual void OnActivate() {}
-    protected virtual void InactiveUpdate() {}
-    protected virtual void ActiveUpdate() {}
+    protected virtual void OnDeactivate() { }
+    protected virtual void OnActivate() { }
+    protected virtual void InactiveUpdate() { }
+    protected virtual void ActiveUpdate() { }
 
-    
 }
