@@ -60,3 +60,6 @@ TagManager:
   - name: Player
     uniqueID: 79852875
     locked: 0
+  - name: Fireball
+    uniqueID: 3710185595
+    locked: 0

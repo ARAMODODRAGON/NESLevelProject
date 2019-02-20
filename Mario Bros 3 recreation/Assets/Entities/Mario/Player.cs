@@ -412,5 +412,3 @@ public class Player : Entity {
     }
 
 }
-
-//Debug.Log(collDir.Left() + ", " + collDir.Right() + ", " + collDir.Top() + ", " + collDir.Bottom());

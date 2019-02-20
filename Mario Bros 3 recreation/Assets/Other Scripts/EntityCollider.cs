@@ -8,11 +8,12 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class EntityCollider : MonoBehaviour {
 
-    public int resultsSize = 5;
+    public int resultsSize = 1;
 
     [Header("MainBox")]
     public bool CheckMain = true;
     public LayerMask mainMask;
+    public Vector2 percentCoverage = Vector2.one;
 
     [Header("Ceiling Check")]
     public bool CheckCeil = true;
@@ -56,6 +57,8 @@ public class EntityCollider : MonoBehaviour {
     [HideInInspector] public BoxCollider2D box;
     [HideInInspector] public Collider2D[] results;
 
+    private Collision2D ptp;
+
     public bool IsGrounded { get; private set; }
     public bool IsCeiling { get; private set; }
     public bool IsLeft { get; private set; }
@@ -81,6 +84,8 @@ public class EntityCollider : MonoBehaviour {
             halfExtents.x += box.edgeRadius;
             halfExtents.y += box.edgeRadius;
 
+            #region Ceiling Check
+
             //side is only checked for if check is set to true
             if (CheckCeil) {
                 //sets the center and size of this box
@@ -95,6 +100,10 @@ public class EntityCollider : MonoBehaviour {
                 //then caluculates and returns true if there was a collision
                 IsCeiling = Physics2D.OverlapBox(boxCenter, boxSize, 0f, topLM);
             }
+
+            #endregion
+
+            #region Ground Check
 
             //side is only checked for if check is set to true
             if (CheckGround) {
@@ -111,6 +120,10 @@ public class EntityCollider : MonoBehaviour {
                 IsGrounded = Physics2D.OverlapBox(boxCenter, boxSize, 0.0f, bottomLM);
             }
 
+            #endregion
+
+            #region LeftSide Check
+
             //side is only checked for if check is set to true
             if (CheckLeft) {
                 //sets the center and size of this box
@@ -125,6 +138,10 @@ public class EntityCollider : MonoBehaviour {
                 //then caluculates and returns true if there was a collision
                 IsLeft = Physics2D.OverlapBox(boxCenter, boxSize, 0.0f, leftLM);
             }
+
+            #endregion
+
+            #region RightSide Check
 
             //side is only checked for if check is set to true
             if (CheckRight) {
@@ -141,12 +158,17 @@ public class EntityCollider : MonoBehaviour {
                 IsRight = Physics2D.OverlapBox(boxCenter, boxSize, 0f, rightLM);
             }
 
+            #endregion
+
+            #region Main Collider Check
+
             //now to check the main area
             if (CheckMain) {
-                if (results.Length != resultsSize) results = new Collider2D[resultsSize];
-                Physics2D.OverlapAreaNonAlloc(colliderCenter - halfExtents, colliderCenter + halfExtents, results, mainMask);
+                results = new Collider2D[resultsSize];
+                Physics2D.OverlapAreaNonAlloc(colliderCenter - halfExtents * percentCoverage, colliderCenter + halfExtents * percentCoverage, results, mainMask);
             }
 
+            #endregion
         }
     }
     
@@ -174,17 +196,19 @@ public class EntityCollider : MonoBehaviour {
         if (CheckMain) {
             //draw the main box
             Gizmos.color = fill;
-            Gizmos.DrawCube(boxCenter, boxSize);
+            Gizmos.DrawCube(boxCenter, boxSize * percentCoverage);
             Gizmos.color = outline;
-            Gizmos.DrawWireCube(boxCenter, boxSize);
+            Gizmos.DrawWireCube(boxCenter, boxSize * percentCoverage);
         }
         
         //sets colors
         outline = Color.red;
         fill = outline;
         fill.a = 0.3f;
-        
+
         //now draw each side box
+
+        #region Draw Boxes
 
         if (CheckCeil) {
             center.x = boxCenter.x;
@@ -237,6 +261,24 @@ public class EntityCollider : MonoBehaviour {
             Gizmos.color = outline;
             Gizmos.DrawWireCube(center, size);
         }
+
+        #endregion
+
+        if (ptp != null) {
+            Gizmos.color = Color.green;
+            for (int i = 0; i < ptp.contactCount; i++) {
+                Debug.Log(ptp.contactCount);
+                Gizmos.DrawSphere(ptp.GetContact(i).point, 0.1f);
+            }
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D col) {
+        ptp = col;
+    }
+
+    private void OnCollisionExit2D(Collision2D col) {
+        ptp = null;
     }
 
     public override string ToString() {

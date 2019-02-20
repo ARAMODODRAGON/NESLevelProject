@@ -19,14 +19,14 @@ public abstract class Collectable : Agent {
 
     protected override void Awake() {
         base.Awake();
-        goUp = false;
+        goUp = true;
     }
 
     protected override void Start() {
         isInBlock = true;
         itemName = "item";
         base.Start();
-        riseLength = 0.9f;
+        riseLength = 1f;
         rb.simulated = false;
     }
 
@@ -40,9 +40,9 @@ public abstract class Collectable : Agent {
         Vector2 newPos = transform.position;
         newPos.y += Time.fixedDeltaTime / riseLength;
         transform.position = newPos;
-
         if (transform.position.y >= (SpawnPosition.y + 1.0f)) {
             isInBlock = false;
+            Debug.Log(transform.position.y - SpawnPosition.y);
             rb.simulated = true;
         }
     }

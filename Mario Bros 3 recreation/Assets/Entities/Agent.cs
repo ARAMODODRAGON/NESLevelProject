@@ -25,6 +25,7 @@ public class Agent : Entity {
     //===============================================================================================================================================//
 
     protected virtual void Awake() {
+        SpawnPosition = transform.position;
         col = GetComponent<BoxCollider2D>();
         isFacingRight = false;
         isActive = true;

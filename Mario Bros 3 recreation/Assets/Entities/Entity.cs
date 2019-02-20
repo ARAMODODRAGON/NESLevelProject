@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 /*
  * is inherited by:
  * Agent,
@@ -13,15 +14,24 @@ public abstract class Entity : MonoBehaviour {
 
     protected bool isFacingRight;
 
+    protected bool lastCol;
+
     protected virtual void Start() {
         //get components
         ec = GetComponent<EntityCollider>();
         rb = GetComponent<Rigidbody2D>();
+        lastCol = true;
     }
 
     protected virtual void FixedUpdate() {
+        bool thisCol = false;
         foreach (Collider2D col in ec.results) {
+            if (col != null) thisCol |= true;
             if (col != null) OnOverlap(col);
+        }
+        if (!lastCol)
+        foreach (Collider2D col in ec.results) {
+            if (col != null) OnOverlapEnter(col);
         }
     }
 
@@ -34,4 +44,5 @@ public abstract class Entity : MonoBehaviour {
     }
 
     protected virtual void OnOverlap(Collider2D col) { }
+    protected virtual void OnOverlapEnter(Collider2D col) { }
 }

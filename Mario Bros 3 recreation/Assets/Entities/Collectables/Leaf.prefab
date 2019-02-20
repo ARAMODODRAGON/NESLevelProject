@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4980325815612322245}
   - component: {fileID: 2592086437537480472}
   - component: {fileID: 135867632244437887}
+  - component: {fileID: 6567269976150680395}
   m_Layer: 9
   m_Name: Leaf
   m_TagString: PowerUp
@@ -69,7 +70,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 13708501
-  m_SortingLayer: 4
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300014, guid: 5e3ccded976a07446af5405a557c59f0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -141,3 +142,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfbb5ee9c789b6741b48327bedd2922d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goUp: 0
+--- !u!114 &6567269976150680395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7210968153943979121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60de4ec5367d4b247aaef9f3b7975173, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resultsSize: 1
+  CheckMain: 1
+  mainMask:
+    serializedVersion: 2
+    m_Bits: 8192
+  percentCoverage: {x: 0.7, y: 0.7}
+  CheckCeil: 0
+  TopThickness: 0.09
+  TopCoverage: 0.9
+  TopDisplacement: 0
+  topLM:
+    serializedVersion: 2
+    m_Bits: 0
+  CheckGround: 0
+  BottomThickness: 0.09
+  BottomCoverage: 0.9
+  BottomDisplacement: 0
+  bottomLM:
+    serializedVersion: 2
+    m_Bits: 0
+  CheckLeft: 0
+  LeftThickness: 0.09
+  LeftCoverage: 0.9
+  LeftDisplacement: 0
+  leftLM:
+    serializedVersion: 2
+    m_Bits: 0
+  CheckRight: 0
+  RightThickness: 0.09
+  RightCoverage: 0.9
+  RightDisplacement: 0
+  rightLM:
+    serializedVersion: 2
+    m_Bits: 0
+  DrawGizmos: 1
+  box: {fileID: 4980325815612322245}
+  results: []

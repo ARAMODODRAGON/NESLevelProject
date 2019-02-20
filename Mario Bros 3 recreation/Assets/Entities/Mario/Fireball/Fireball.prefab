@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2634838177364143982}
   - component: {fileID: 8540503640258809395}
   - component: {fileID: 8540503640258809396}
-  - component: {fileID: 8540503640258809397}
   - component: {fileID: 8540503640258809398}
+  - component: {fileID: 3788535759112933255}
   m_Layer: 11
   m_Name: Fireball
   m_TagString: Fireball
@@ -110,8 +110,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 13708501
-  m_SortingLayer: 3
+  m_SortingLayerID: -584781701
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21301322, guid: 825bd413ca604b94a883380bbd5dc371, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -124,43 +124,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8540503640258809397
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8540503640258809394}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e360f31b46f3a64b8b082e5895823db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TopThickness: 0.09
-  TopCoverage: 0.7
-  TopDisplacement: 0
-  topLM:
-    serializedVersion: 2
-    m_Bits: 0
-  LeftThickness: 0.07
-  LeftCoverage: 0.7
-  LeftDisplacement: 0
-  leftLM:
-    serializedVersion: 2
-    m_Bits: 1
-  RightThickness: 0.07
-  RightCoverage: 0.7
-  RightDisplacement: 0
-  rightLM:
-    serializedVersion: 2
-    m_Bits: 1
-  BottomThickness: 0.3
-  BottomCoverage: 0.7
-  BottomDisplacement: -0.2
-  bottomLM:
-    serializedVersion: 2
-    m_Bits: 4097
-  drawBoxes: 1
 --- !u!50 &8540503640258809398
 Rigidbody2D:
   serializedVersion: 4
@@ -182,3 +145,52 @@ Rigidbody2D:
   m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &3788535759112933255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8540503640258809394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60de4ec5367d4b247aaef9f3b7975173, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resultsSize: 1
+  CheckMain: 1
+  mainMask:
+    serializedVersion: 2
+    m_Bits: 512
+  percentCoverage: {x: 1, y: 1}
+  CheckCeil: 0
+  TopThickness: 0.09
+  TopCoverage: 0.9
+  TopDisplacement: 0
+  topLM:
+    serializedVersion: 2
+    m_Bits: 0
+  CheckGround: 1
+  BottomThickness: 0.09
+  BottomCoverage: 0.9
+  BottomDisplacement: 0
+  bottomLM:
+    serializedVersion: 2
+    m_Bits: 1
+  CheckLeft: 1
+  LeftThickness: 0.09
+  LeftCoverage: 0.2
+  LeftDisplacement: 0
+  leftLM:
+    serializedVersion: 2
+    m_Bits: 1
+  CheckRight: 1
+  RightThickness: 0.09
+  RightCoverage: 0.2
+  RightDisplacement: 0
+  rightLM:
+    serializedVersion: 2
+    m_Bits: 1
+  DrawGizmos: 1
+  box: {fileID: 8540503640258809395}
+  results: []

@@ -9,10 +9,12 @@ public abstract class Enemies : Agent {
     protected SpriteRenderer sp;
 
     protected int hitPoints;
+    protected bool shouldColWithPlayer;
 
     protected override void Awake() {
         base.Awake();
         hitPoints = 1; ///default value
+        shouldColWithPlayer = true;
     }
 
     protected override void Start() {
@@ -26,6 +28,7 @@ public abstract class Enemies : Agent {
 
     //enemies will reset position when going off screen
     protected override void OnDeactivate() {
+        shouldColWithPlayer = false;
         transform.position = SpawnPosition;
         col.enabled = false;
         sp.enabled = false;
@@ -38,11 +41,12 @@ public abstract class Enemies : Agent {
         rb.simulated = true;
         col.enabled = true;
         sp.enabled = true;
+        shouldColWithPlayer = true;
     }
 
     protected override void OnOverlap(Collider2D col) {
         if (hitPoints == 0) return;
-        if (col.tag.Equals("Player")) {
+        if (shouldColWithPlayer && col.tag.Equals("Player")) {
             Player.instance.TakeDamage(this);
         }
     }
