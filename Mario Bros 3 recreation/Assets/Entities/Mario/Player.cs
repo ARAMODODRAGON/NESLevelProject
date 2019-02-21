@@ -306,7 +306,7 @@ public class Player : Entity {
             } else if (axis.Right) {
                 XVel.Amount += XAccel * Time.fixedDeltaTime;
             }
-        } else {
+        } else if (ec.IsGrounded) {
             //have the player decelerate back to 0
             if (XVel.Amount < -0.1f) XVel.Amount += XDeccel * Time.fixedDeltaTime;
             else if (XVel.Amount > 0.1f) XVel.Amount -= XDeccel * Time.fixedDeltaTime;
