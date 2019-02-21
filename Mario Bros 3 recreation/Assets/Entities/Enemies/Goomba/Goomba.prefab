@@ -175,10 +175,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de4ec5367d4b247aaef9f3b7975173, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resultsSize: 1
   CheckMain: 1
   mainMask:
     serializedVersion: 2
     m_Bits: 8192
+  percentCoverage: {x: 0.85, y: 0.85}
   CheckCeil: 0
   TopThickness: 0.09
   TopCoverage: 0.9

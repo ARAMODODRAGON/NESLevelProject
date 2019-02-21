@@ -134,7 +134,7 @@ public class Player : Entity {
     // isFacingRight can be gotten from outside the script
     public bool IsFacingRight() { return isFacingRight; }
 
-    public Vector3 center {
+    public Vector3 Center {
         get {
             return hitSmall.bounds.center;
         }
@@ -171,8 +171,7 @@ public class Player : Entity {
 
     //=============================================================================================================================================//
 
-    protected override void FixedUpdate() {
-        base.FixedUpdate();
+    protected void FixedUpdate() {
         if (!isTransitioning && curPowerUp != Powerups.dead) {
 
             //do this once in the begining so i dont have to check multiple times

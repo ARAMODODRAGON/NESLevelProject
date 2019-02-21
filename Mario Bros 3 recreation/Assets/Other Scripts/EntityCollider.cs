@@ -58,6 +58,7 @@ public class EntityCollider : MonoBehaviour {
     [HideInInspector] public Collider2D[] results;
 
     private Collision2D ptp;
+    private bool lastRes;
 
     public bool IsGrounded { get; private set; }
     public bool IsCeiling { get; private set; }
@@ -73,12 +74,13 @@ public class EntityCollider : MonoBehaviour {
         box = GetComponent<BoxCollider2D>();
         results = new Collider2D[resultsSize];
         StartCoroutine(CollCheck());
+        lastRes = false;
     }
 
     IEnumerator CollCheck() {
         while (true) {
             yield return new WaitForFixedUpdate();
-            
+
             Vector2 colliderCenter = box.bounds.center;
             Vector2 halfExtents = box.bounds.extents;
             halfExtents.x += box.edgeRadius;
@@ -165,13 +167,36 @@ public class EntityCollider : MonoBehaviour {
             //now to check the main area
             if (CheckMain) {
                 results = new Collider2D[resultsSize];
-                Physics2D.OverlapAreaNonAlloc(colliderCenter - halfExtents * percentCoverage, colliderCenter + halfExtents * percentCoverage, results, mainMask);
+                int i = Physics2D.OverlapAreaNonAlloc(colliderCenter - halfExtents * percentCoverage,
+                    colliderCenter + halfExtents * percentCoverage, results, mainMask);
+
+                if (i != 0 && !lastRes) {
+                    foreach (Collider2D item in results) {
+                        if (item == null) continue;
+                        SendMessage("OnOverlapEnter", item, SendMessageOptions.DontRequireReceiver);
+                    }
+                }
+
+                if (i != 0) {
+                    foreach (Collider2D item in results) {
+                        if (item == null) continue;
+                        SendMessage("OnOverlapStay", item, SendMessageOptions.DontRequireReceiver);
+                    }
+                }
+
+                if (i == 0 && lastRes) {
+                    foreach (Collider2D item in results) {
+                        if (item == null) continue;
+                        SendMessage("OnOverlapExit", item, SendMessageOptions.DontRequireReceiver);
+                    }
+                }
+                lastRes = i == 0;
             }
 
             #endregion
         }
     }
-    
+
     //==============================================================================================================================//
 
     private void OnDrawGizmosSelected() {
@@ -200,7 +225,7 @@ public class EntityCollider : MonoBehaviour {
             Gizmos.color = outline;
             Gizmos.DrawWireCube(boxCenter, boxSize * percentCoverage);
         }
-        
+
         //sets colors
         outline = Color.red;
         fill = outline;
@@ -240,7 +265,7 @@ public class EntityCollider : MonoBehaviour {
             center.x = boxCenter.x - boxSize.x / 2f - LeftThickness / 2f - LeftDisplacement;
             center.y = boxCenter.y;
 
-            size.x = LeftThickness ;
+            size.x = LeftThickness;
             size.y = boxSize.y * LeftCoverage;
 
             Gizmos.color = fill;
@@ -264,21 +289,6 @@ public class EntityCollider : MonoBehaviour {
 
         #endregion
 
-        if (ptp != null) {
-            Gizmos.color = Color.green;
-            for (int i = 0; i < ptp.contactCount; i++) {
-                Debug.Log(ptp.contactCount);
-                Gizmos.DrawSphere(ptp.GetContact(i).point, 0.1f);
-            }
-        }
-    }
-
-    private void OnCollisionStay2D(Collision2D col) {
-        ptp = col;
-    }
-
-    private void OnCollisionExit2D(Collision2D col) {
-        ptp = null;
     }
 
     public override string ToString() {

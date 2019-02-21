@@ -44,7 +44,8 @@ public abstract class Enemies : Agent {
         shouldColWithPlayer = true;
     }
 
-    protected override void OnOverlap(Collider2D col) {
+    protected void OnOverlapEnter(Collider2D col) {
+        Debug.Log("IT WORKS");
         if (hitPoints == 0) return;
         if (shouldColWithPlayer && col.tag.Equals("Player")) {
             Player.instance.TakeDamage(this);

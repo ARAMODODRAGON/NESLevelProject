@@ -78,7 +78,7 @@ public class FireBallController : Agent {
         }
     }
 
-    protected override void OnOverlap(Collider2D col) {
+    protected void OnOverlapEnter(Collider2D col) {
         if (col.tag.Equals("Enemy")) {
             col.gameObject.GetComponent<Enemies>().TakeDamage("fire");
             Destroy(gameObject);

@@ -61,8 +61,7 @@ public class Agent : Entity {
     //===============================================================================================================================================//
 
     ///the way this is gonna work is that if one agent is not going to use a function then it can just override fixedupdate and run the functions it needs
-    protected override void FixedUpdate() {
-        base.FixedUpdate();
+    protected void FixedUpdate() {
 
         //flip
         CheckForFlip();

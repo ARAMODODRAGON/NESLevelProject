@@ -53,7 +53,7 @@ public abstract class Collectable : Agent {
         Destroy(gameObject);
     }
 
-    protected override void OnOverlap(Collider2D coll) {
+    protected void OnOverlapEnter(Collider2D coll) {
         if (coll.gameObject.tag.Equals(player.tag)) {
             player.CollectItem(itemName);
             Destroy(gameObject);

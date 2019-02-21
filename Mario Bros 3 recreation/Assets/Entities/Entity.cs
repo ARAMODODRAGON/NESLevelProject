@@ -13,28 +13,13 @@ public abstract class Entity : MonoBehaviour {
     protected EntityCollider ec;
 
     protected bool isFacingRight;
-
-    protected bool lastCol;
-
+    
     protected virtual void Start() {
         //get components
         ec = GetComponent<EntityCollider>();
         rb = GetComponent<Rigidbody2D>();
-        lastCol = true;
     }
-
-    protected virtual void FixedUpdate() {
-        bool thisCol = false;
-        foreach (Collider2D col in ec.results) {
-            if (col != null) thisCol |= true;
-            if (col != null) OnOverlap(col);
-        }
-        if (!lastCol)
-        foreach (Collider2D col in ec.results) {
-            if (col != null) OnOverlapEnter(col);
-        }
-    }
-
+    
     protected void Flip() {
         //flip is used by almost all entities
         Vector3 scale = transform.localScale;
@@ -42,7 +27,5 @@ public abstract class Entity : MonoBehaviour {
         transform.localScale = scale;
         isFacingRight = !isFacingRight;
     }
-
-    protected virtual void OnOverlap(Collider2D col) { }
-    protected virtual void OnOverlapEnter(Collider2D col) { }
+    
 }
