@@ -268,8 +268,7 @@ public class Player : Entity {
 
         //updates the properties in the animation controller
         UpdateAnimVariables();
-
-        //Debug.Log(mt);
+        //Debug.Log(mt.Check("Bottom"));
     }
 
     #region Attack methods
@@ -431,7 +430,7 @@ public class Player : Entity {
 
     private void UpdateAnimVariables() {
         //tell if marios on the ground
-        anim.SetBool("IsGrounded", ec.IsGrounded && YVel <= 0.0f);
+        anim.SetBool("IsGrounded", IsGrounded && YVel <= 0.0f);
         
         //this is for the diffrent run speeds
         if (XVel.Abs >= maxPSpeed) {

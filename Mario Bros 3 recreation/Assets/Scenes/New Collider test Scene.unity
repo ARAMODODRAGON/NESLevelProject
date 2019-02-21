@@ -125,40 +125,40 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resultsSize: 1
-  CheckMain: 1
+  CheckMain: 0
   mainMask:
     serializedVersion: 2
     m_Bits: 513
   percentCoverage: {x: 1, y: 1}
-  CheckCeil: 1
+  CheckCeil: 0
   TopThickness: 0.09
   TopCoverage: 0.9
   TopDisplacement: 0
   topLM:
     serializedVersion: 2
     m_Bits: 1
-  CheckGround: 1
+  CheckGround: 0
   BottomThickness: 0.02
   BottomCoverage: 0.9
   BottomDisplacement: -0.005
   bottomLM:
     serializedVersion: 2
     m_Bits: 4097
-  CheckLeft: 1
+  CheckLeft: 0
   LeftThickness: 0.09
   LeftCoverage: 0.75
   LeftDisplacement: 0
   leftLM:
     serializedVersion: 2
     m_Bits: 1
-  CheckRight: 1
+  CheckRight: 0
   RightThickness: 0.09
   RightCoverage: 0.75
   RightDisplacement: 0
   rightLM:
     serializedVersion: 2
     m_Bits: 1
-  DrawGizmos: 1
+  DrawGizmos: 0
   box: {fileID: 9173313270348863911}
   results: []
 --- !u!1001 &251102897
@@ -1444,8 +1444,8 @@ MonoBehaviour:
     layerMask:
       serializedVersion: 2
       m_Bits: 1
-    offset: {x: 0.013218403, y: -0.07622647}
-    size: {x: 0.54161596, y: 0.21233225}
+    offset: {x: 0.003956318, y: -0.07622647}
+    size: {x: 0.60542154, y: 0.21233225}
     DrawGizmo: 0
     isTriggered: 0
   - name: SmallTop
@@ -1460,40 +1460,40 @@ MonoBehaviour:
     layerMask:
       serializedVersion: 2
       m_Bits: 1
-    offset: {x: -0.43932152, y: 0.48945284}
-    size: {x: 0.16220379, y: 0.69157743}
+    offset: {x: -0.4515915, y: 0.48945284}
+    size: {x: 0.13766384, y: 0.69157743}
     DrawGizmo: 0
     isTriggered: 0
   - name: SmallRight
     layerMask:
       serializedVersion: 2
       m_Bits: 1
-    offset: {x: 0.45592928, y: 0.49541378}
-    size: {x: 0.16860008, y: 0.7118149}
+    offset: {x: 0.4892335, y: 0.49541378}
+    size: {x: 0.10199165, y: 0.7118149}
     DrawGizmo: 0
     isTriggered: 0
   - name: BigTop
     layerMask:
       serializedVersion: 2
       m_Bits: 1
-    offset: {x: -0.0025200844, y: 1.722583}
-    size: {x: 0.52442026, y: 0.18441033}
+    offset: {x: 0.033260822, y: 1.6820313}
+    size: {x: 0.5959816, y: 0.10330677}
     DrawGizmo: 0
     isTriggered: 0
   - name: BigLeft
     layerMask:
       serializedVersion: 2
       m_Bits: 1
-    offset: {x: 0.44829464, y: 0.8274318}
-    size: {x: 0.16274738, y: 1.3737571}
+    offset: {x: -0.4390726, y: 0.8274318}
+    size: {x: 0.12458134, y: 1.3737571}
     DrawGizmo: 0
     isTriggered: 0
   - name: BigRight
     layerMask:
       serializedVersion: 2
       m_Bits: 1
-    offset: {x: -0.44470072, y: 0.82201004}
-    size: {x: 0.16154432, y: 1.3619862}
+    offset: {x: 0.47, y: 0.8274318}
+    size: {x: 0.1245813, y: 1.373757}
     DrawGizmo: 0
     isTriggered: 0
 --- !u!4 &4161618694689841
@@ -1544,7 +1544,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.4880954}
+  m_Offset: {x: 0.031058073, y: 0.4681791}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
@@ -1555,8 +1555,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5204773, y: 0.6943686}
-  m_EdgeRadius: 0.1
+  m_Size: {x: 0.7116761, y: 0.835325}
+  m_EdgeRadius: 0.05
 --- !u!212 &212399749267337571
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1668,7 +1668,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.83314204}
+  m_Offset: {x: 0.031058073, y: 0.8130674}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
@@ -1679,5 +1679,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5203584, y: 1.3829417}
-  m_EdgeRadius: 0.1
+  m_Size: {x: 0.7116761, y: 1.5251015}
+  m_EdgeRadius: 0.05

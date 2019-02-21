@@ -47,6 +47,10 @@ public class MultiTrigger : MonoBehaviour {
         return Triggers.Find(Ctrigger => Ctrigger.name == triggerName).isTriggered && IsColliding;
     }
 
+    public bool Check2(string triggerName) {
+        return Triggers.Find(Ctrigger => Ctrigger.name == triggerName).isTriggered;
+    }
+
     public bool disable(params string[] na) {
         foreach (var n in na) {
             listOfGO.FindAll(GameObject => GameObject.name == n).ForEach(GameObject => GameObject.SetActive(false));
