@@ -23,12 +23,16 @@ public class ChildTrigger : MonoBehaviour {
             mt.setTrigger(true, name);
         }
     }
-    
+
     private void OnTriggerExit2D(Collider2D col) {
         if (col.IsTouchingLayers(lm)) {
             c--;
             if (c == 0) mt.setTrigger(false, name);
         }
     }
-    
+
+    private void OnDisable() {
+        Debug.Log(name + " is now disabled");
+    }
+
 }

@@ -11,6 +11,7 @@ public abstract class Entity : MonoBehaviour {
     // components which all entities need
     protected Rigidbody2D rb;
     protected EntityCollider ec;
+    protected MultiTrigger mt;
 
     protected bool isFacingRight;
 
@@ -20,11 +21,12 @@ public abstract class Entity : MonoBehaviour {
         //get components
         ec = GetComponent<EntityCollider>();
         rb = GetComponent<Rigidbody2D>();
+        mt = GetComponent<MultiTrigger>();
         lastCol = true;
     }
 
     protected virtual void FixedUpdate() {
-        bool thisCol = false;
+        /*bool thisCol = false;
         foreach (Collider2D col in ec.results) {
             if (col != null) thisCol |= true;
             if (col != null) OnOverlap(col);
@@ -32,7 +34,7 @@ public abstract class Entity : MonoBehaviour {
         if (!lastCol)
         foreach (Collider2D col in ec.results) {
             if (col != null) OnOverlapEnter(col);
-        }
+        }//*/
     }
 
     protected void Flip() {

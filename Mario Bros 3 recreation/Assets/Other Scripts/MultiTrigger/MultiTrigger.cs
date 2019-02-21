@@ -35,7 +35,7 @@ public class MultiTrigger : MonoBehaviour {
             listOfGO[i].transform.SetParent(transform);
             listOfGO[i].transform.position = transform.position;
             listOfGO[i].AddComponent<ChildTrigger>().lm = Triggers[i].layerMask;
-            listOfGO[i].hideFlags = HideFlags.HideInHierarchy;
+            //listOfGO[i].hideFlags = HideFlags.HideInHierarchy;
             var bc = listOfGO[i].AddComponent<BoxCollider2D>();
             bc.size = Triggers[i].size;
             bc.offset = Triggers[i].offset;
@@ -56,7 +56,7 @@ public class MultiTrigger : MonoBehaviour {
 
     public bool enable(params string[] na) {
         foreach (var n in na) {
-            listOfGO.FindAll(GameObject => GameObject.name == n).ForEach(GameObject => GameObject.SetActive(false));
+            listOfGO.FindAll(GameObject => GameObject.name == n).ForEach(GameObject => GameObject.SetActive(true));
         }
         return true;
     }
@@ -91,5 +91,13 @@ public class MultiTrigger : MonoBehaviour {
             Gizmos.color = outline;
             Gizmos.DrawWireCube((Vector3)trig.offset + transform.position, trig.size);
         }
+    }
+
+    public override string ToString() {
+        string s = "";
+        foreach (var item in Triggers) {
+            s += "( " + item.isTriggered + " ) ";
+        }
+        return s;
     }
 }

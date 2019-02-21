@@ -52,7 +52,7 @@ public class CameraController : MonoBehaviour {
 
     private void LateUpdate() {
         if (currentState == CameraStates.bounded) {
-            Vector3 playerPos = Player.instance.center;
+            Vector3 playerPos = Player.instance.Center;
             Vector3 distanceFromPlayer = playerPos - transform.position;
             Vector3 cameraPos = transform.position;
 

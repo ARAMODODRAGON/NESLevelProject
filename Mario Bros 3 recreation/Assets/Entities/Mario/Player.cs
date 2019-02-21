@@ -29,6 +29,8 @@ public class Player : Entity {
     private bool isAttack;
     private bool canAttack;
 
+    #region movement variables
+
     //movement variables
     [Header("X Movement Variables")]
     public float maxWalkSpeed;
@@ -47,18 +49,21 @@ public class Player : Entity {
     private float extraJumptime;
     public float bounceHeight;
 
+
     private Meter XVel;
     private Meter YTime;
     private Meter PMeter;
     public float YVel { get; private set; }
+    
+    #endregion
 
     //animation variables
     private Animator anim;
     private bool hadJumped;
 
     public GameObject fireBall;
-
-    //=============================================================================================================================================//
+    
+    #region Initialisation
 
     private void Awake() {
         curPowerUp = Powerups.small;
@@ -73,6 +78,8 @@ public class Player : Entity {
     protected override void Start() {
         base.Start();
         //start small
+        mt.enable("SmallTop", "SmallLeft", "SmallRight", "Bottom");
+        mt.disable("BigTop", "BigLeft", "BigRight");
         IsSmall = true;
         isFacingRight = false;
         Flip();
@@ -110,7 +117,9 @@ public class Player : Entity {
         isTransitioning = false;
     }
 
-    //=============================================================================================================================================//
+    #endregion
+
+    #region properties
 
     private bool IsSmall {
         get {
@@ -124,23 +133,79 @@ public class Player : Entity {
             hitBig.enabled = !value;
             //if false then the reverse happens
             if (value) {
-                ec.box = hitSmall;
+                mt.enable("SmallTop", "SmallLeft", "SmallRight");
+                mt.disable("BigTop", "BigLeft", "BigRight");
             } else {
-                ec.box = hitBig;
+                mt.enable("BigTop", "BigLeft", "BigRight");
+                mt.disable("SmallTop", "SmallLeft", "SmallRight");
             }
         }
     }
 
     // isFacingRight can be gotten from outside the script
     public bool IsFacingRight() { return isFacingRight; }
-
-    public Vector3 center {
+    
+    public Vector2 Center {
         get {
-            return hitSmall.bounds.center;
+            return (Vector3)hitBig.offset + transform.position;
         }
     }
 
-    //=============================================================================================================================================//
+    private bool IsLeft {
+        get {
+            if (isFacingRight) {
+                if (IsSmall) {
+                    return mt.Check("SmallRight");
+                } else {
+                    return mt.Check("BigRight");
+                }
+            } else {
+                if (IsSmall) {
+                    return mt.Check("SmallLeft");
+                } else {
+                    return mt.Check("BigLeft");
+                }
+            }
+        }
+    }
+
+    private bool IsRight {
+        get {
+            if (isFacingRight) {
+                if (IsSmall) {
+                    return mt.Check("SmallLeft");
+                } else {
+                    return mt.Check("BigLeft");
+                }
+            } else {
+                if (IsSmall) {
+                    return mt.Check("SmallRight");
+                } else {
+                    return mt.Check("BigRight");
+                }
+            }
+        }
+    }
+
+    private bool IsGrounded {
+        get {
+            return mt.Check("Bottom");
+        }
+    }
+
+    private bool IsCeiling {
+        get {
+            if (IsSmall) {
+                return mt.Check("SmallTop");
+            } else {
+                return mt.Check("BigTop");
+            }
+        }
+    }
+
+    #endregion
+
+    #region public methods
 
     public void CollectItem(string itemName) {
         if (itemName.Equals("Mushroom") && curPowerUp == Powerups.small) {
@@ -169,7 +234,7 @@ public class Player : Entity {
         }
     }
 
-    //=============================================================================================================================================//
+    #endregion
 
     protected override void FixedUpdate() {
         base.FixedUpdate();
@@ -188,11 +253,11 @@ public class Player : Entity {
             AttackCheck();
 
             //first is horizontal movement
-            calculatePSpeed();
+            CalculatePSpeed();
             HandleXMovement();
 
             //second is vertical movement
-            calculateJumpHeight();
+            CalculateJumpHeight();
             HandleYMovement();
 
             //apply the new velocity
@@ -203,11 +268,12 @@ public class Player : Entity {
 
         //updates the properties in the animation controller
         UpdateAnimVariables();
-        
+
+        //Debug.Log(mt);
     }
 
-    //=============================================================================================================================================//
-
+    #region Attack methods
+    
     private void AttackCheck() {
         if (bBut.ButtonDown && (curPowerUp == Powerups.fire || curPowerUp == Powerups.leaf)) {
             isAttack = true;
@@ -240,21 +306,23 @@ public class Player : Entity {
         isAttack = false;
     }
 
-    //====================================================-------Movement-------===================================================================//
+    #endregion
+
+    #region movement methods
 
     private void CheckForFlip() {
         //only flips the player if their holding a direction and also is moving in that direction
         //eg. one direction is held but mario is sliding the other way so mario wont flip
-        if (isFacingRight && axis.Left && (XVel.Amount <= 0.0f || !ec.IsGrounded)) Flip();
-        if (!isFacingRight && axis.Right && (XVel.Amount >= 0.0f || !ec.IsGrounded)) Flip();
+        if (isFacingRight && axis.Left && (XVel.Amount <= 0.0f || !IsGrounded)) Flip();
+        if (!isFacingRight && axis.Right && (XVel.Amount >= 0.0f || !IsGrounded)) Flip();
 
         //this is for when they land and they arnt facing the right direction
-        if (XVel.Amount < 0.0f && isFacingRight && ec.IsGrounded) Flip();
-        if (XVel.Amount > 0.0f && !isFacingRight && ec.IsGrounded) Flip();
+        if (XVel.Amount < 0.0f && isFacingRight && IsGrounded) Flip();
+        if (XVel.Amount > 0.0f && !isFacingRight && IsGrounded) Flip();
     }
 
     private void CheckForCrouch() {
-        if (curPowerUp != Powerups.small && ec.IsGrounded) {
+        if (curPowerUp != Powerups.small && IsGrounded) {
             if (axis.Down && !axis.Left && !axis.Right) {
                 isCrouching = true;
                 IsSmall = true;
@@ -265,7 +333,7 @@ public class Player : Entity {
         }
     }
 
-    private void calculatePSpeed() {
+    private void CalculatePSpeed() {
         //control Pspeed based off of how long b is held and if the player is moving faster than run speed
         if (bBut.ButtonHeld && XVel.Amount != 0.0f) {
             //first the max speed gets set to the players run speed
@@ -293,9 +361,9 @@ public class Player : Entity {
 
     private void HandleXMovement() {
         //if mario hits a wall then the speed gets set to 0
-        if (ec.IsRight && XVel.Amount > 0.0f) {
+        if (IsRight && XVel.Amount > 0.0f) {
             XVel.Amount = 0.0f;
-        } else if (ec.IsLeft && XVel.Amount < 0.0f) {
+        } else if (IsLeft && XVel.Amount < 0.0f) {
             XVel.Amount = 0.0f;
         }
 
@@ -315,9 +383,9 @@ public class Player : Entity {
         }
     }
 
-    private void calculateJumpHeight() {
+    private void CalculateJumpHeight() {
         //calculates jump height based off run speed
-        if (ec.IsGrounded) {
+        if (IsGrounded) {
             extraJumptime = extraJumpHeight * XVel.Abs / maxPSpeed * (riseTime / jumpHeight);
             if (YTime.Amount >= YTime.Max - 0.01f) {
                 YTime.Amount = YTime.Max;
@@ -328,7 +396,7 @@ public class Player : Entity {
 
     private void HandleYMovement() {
         //reset the timer if player has pressed jump
-        if (aBut.ButtonDown && ec.IsGrounded) {
+        if (aBut.ButtonDown && IsGrounded) {
             YTime.Amount = 0.0f;
             YVel = jumpHeight / riseTime;
         }
@@ -345,7 +413,7 @@ public class Player : Entity {
         }
 
         //this end the timer imediately if the players head hits something
-        if (ec.IsCeiling) {
+        if (IsCeiling) {
             YTime.Amount = YTime.Max;
             YVel = -fallSpeed;
         }
@@ -354,11 +422,12 @@ public class Player : Entity {
         if (YTime.Amount >= YTime.Max) {
             YVel -= Time.fixedDeltaTime * fallAccel;
             if (rb.velocity.y < -fallSpeed) YVel = -fallSpeed / 2;
-            if (ec.IsGrounded && YVel <= 0.0f) YVel = 0.0f;
+            if (IsGrounded && YVel < 0.0f) YVel = 0.0f;
         }
     }
 
-    //=============================================================================================================================================//
+    #endregion
+
 
     private void UpdateAnimVariables() {
         //tell if marios on the ground
