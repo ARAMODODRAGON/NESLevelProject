@@ -14,7 +14,7 @@ public abstract class Entity : MonoBehaviour {
 
     protected bool isFacingRight;
     
-    protected virtual void Start() {
+    protected virtual void Awake() {
         //get components
         ec = GetComponent<EntityCollider>();
         rb = GetComponent<Rigidbody2D>();

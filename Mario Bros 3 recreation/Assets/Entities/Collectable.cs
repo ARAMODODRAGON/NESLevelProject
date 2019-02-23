@@ -42,7 +42,6 @@ public abstract class Collectable : Agent {
         transform.position = newPos;
         if (transform.position.y >= (SpawnPosition.y + 1.0f)) {
             isInBlock = false;
-            Debug.Log(transform.position.y - SpawnPosition.y);
             rb.simulated = true;
         }
     }

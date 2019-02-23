@@ -23,7 +23,7 @@ public abstract class Enemies : Agent {
     }
 
     public virtual void TakeDamage(string killType) {
-        //Destroy(gameObject);
+        Destroy(gameObject);
     }
 
     //enemies will reset position when going off screen
@@ -45,7 +45,6 @@ public abstract class Enemies : Agent {
     }
 
     protected void OnOverlapEnter(Collider2D col) {
-        Debug.Log("IT WORKS");
         if (hitPoints == 0) return;
         if (shouldColWithPlayer && col.tag.Equals("Player")) {
             Player.instance.TakeDamage(this);

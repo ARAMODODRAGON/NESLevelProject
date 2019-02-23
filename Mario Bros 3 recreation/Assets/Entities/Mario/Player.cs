@@ -58,9 +58,10 @@ public class Player : Entity {
 
     public GameObject fireBall;
 
-    //=============================================================================================================================================//
-
-    private void Awake() {
+    #region initialization
+    
+    protected override void Awake() {
+        base.Awake();
         curPowerUp = Powerups.small;
         if (instance != null) {
             Debug.LogError("There is already one player in the scene");
@@ -70,8 +71,7 @@ public class Player : Entity {
         }
     }
 
-    protected override void Start() {
-        base.Start();
+    protected void Start() {
         //start small
         IsSmall = true;
         isFacingRight = false;
@@ -110,7 +110,9 @@ public class Player : Entity {
         isTransitioning = false;
     }
 
-    //=============================================================================================================================================//
+    #endregion
+
+    #region properties
 
     private bool IsSmall {
         get {
@@ -140,7 +142,9 @@ public class Player : Entity {
         }
     }
 
-    //=============================================================================================================================================//
+    #endregion
+                                       
+    #region public methods
 
     public void CollectItem(string itemName) {
         if (itemName.Equals("Mushroom") && curPowerUp == Powerups.small) {
@@ -169,8 +173,8 @@ public class Player : Entity {
         }
     }
 
-    //=============================================================================================================================================//
-
+    #endregion
+    
     protected void FixedUpdate() {
         if (!isTransitioning && curPowerUp != Powerups.dead) {
 
@@ -205,7 +209,7 @@ public class Player : Entity {
         
     }
 
-    //=============================================================================================================================================//
+    #region attacking
 
     private void AttackCheck() {
         if (bBut.ButtonDown && (curPowerUp == Powerups.fire || curPowerUp == Powerups.leaf)) {
@@ -239,7 +243,9 @@ public class Player : Entity {
         isAttack = false;
     }
 
-    //====================================================-------Movement-------===================================================================//
+    #endregion
+
+    #region movement
 
     private void CheckForFlip() {
         //only flips the player if their holding a direction and also is moving in that direction
@@ -357,8 +363,8 @@ public class Player : Entity {
         }
     }
 
-    //=============================================================================================================================================//
-
+    #endregion
+    
     private void UpdateAnimVariables() {
         //tell if marios on the ground
         anim.SetBool("IsGrounded", ec.IsGrounded && YVel <= 0.0f);

@@ -7,9 +7,11 @@ public class Goomba : Enemies {
     private AnimatedSprite ass; //because I cant use 'as'
     public Sprite DeadGoomb;
     public float timeToDeath;
+    public float speed;
 
     protected override void Start() {
         base.Start();
+
         if (Player.instance.transform.position.x <= transform.position.x) {
             isFacingRight = false;
         } else {
@@ -18,7 +20,13 @@ public class Goomba : Enemies {
         ass = GetComponent<AnimatedSprite>();
     }
 
-    public float speed;
+    // this is only called when instantiated by the paragoomba
+    public IEnumerator StartFromPara(bool faceright) {
+        ec.CheckMain = false;
+        yield return new WaitForFixedUpdate();
+        ec.CheckMain = true;
+        isFacingRight = faceright;
+    }
 
     protected override void OnActivate() {
         base.OnActivate();
@@ -39,15 +47,14 @@ public class Goomba : Enemies {
 
     public override void TakeDamage(string killType) {
         if (killType.Equals("stomp")) {
-            ass.play = false;
+            ass.Stop();
             rb.simulated = false;
             sp.sprite = DeadGoomb;
             hitPoints = 0;
             Destroy(gameObject, timeToDeath);
         } else if (killType.Equals("fire")) {
             hitPoints = 0;
-            ass.play = false;
-            Destroy(transform.GetChild(0).gameObject);
+            ass.Stop();
             GetComponent<BoxCollider2D>().enabled = false;
             if (isFacingRight) rb.velocity = new Vector2(1f, 10f) * speed;
             else rb.velocity = new Vector2(-1f, 10f) * speed;

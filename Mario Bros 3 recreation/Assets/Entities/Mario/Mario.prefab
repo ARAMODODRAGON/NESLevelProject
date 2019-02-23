@@ -200,7 +200,7 @@ MonoBehaviour:
   pTime: 1.3
   XAccel: 16
   XDeccel: 9
-  jumpHeight: 4.2
+  jumpHeight: 4.1
   riseTime: 0.4
   fallSpeed: 15
   fallAccel: 100
@@ -235,10 +235,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60de4ec5367d4b247aaef9f3b7975173, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resultsSize: 1
   CheckMain: 1
   mainMask:
     serializedVersion: 2
     m_Bits: 513
+  percentCoverage: {x: 1, y: 1}
   CheckCeil: 1
   TopThickness: 0.09
   TopCoverage: 0.9

@@ -9,6 +9,10 @@ using UnityEngine;
  */
  
 public class Agent : Entity {
+
+    //singleton list of all agents
+    public static List<Agent> All = new List<Agent>();
+
     // components
     protected Player player;
     protected CameraController cameraInst;
@@ -24,7 +28,9 @@ public class Agent : Entity {
 
     //===============================================================================================================================================//
 
-    protected virtual void Awake() {
+    protected override void Awake() {
+        base.Awake();
+        All.Add(this);
         SpawnPosition = transform.position;
         col = GetComponent<BoxCollider2D>();
         isFacingRight = false;
@@ -33,10 +39,7 @@ public class Agent : Entity {
         CanCheckForFlip = true;
     }
 
-    protected override void Start() {
-        //calls start on entity first
-        base.Start();
-
+    protected virtual void Start() {
         //gets the player instance
         //this is a public static variable so only one instance of it can exsists at any one point
         //the instance is gotten in awake in the player script so agents are all able to get it from start
@@ -57,11 +60,9 @@ public class Agent : Entity {
             isActive = true;
         }
     }
-
-    //===============================================================================================================================================//
-
+    
     ///the way this is gonna work is that if one agent is not going to use a function then it can just override fixedupdate and run the functions it needs
-    protected void FixedUpdate() {
+    protected virtual void FixedUpdate() {
 
         //flip
         CheckForFlip();
@@ -69,9 +70,7 @@ public class Agent : Entity {
         //checks if this entity is visible on screen and runs the event functions
         CallEvents();
     }
-
-    //===============================================================================================================================================//
-
+    
     protected bool CheckIsOnScreen {
         get {
             //gets the distance to the camera
@@ -129,4 +128,15 @@ public class Agent : Entity {
     protected virtual void InactiveUpdate() { }
     protected virtual void ActiveUpdate() { }
 
+    protected virtual void OnDestroy() {
+        All.Remove(this);
+    }
+
+    public static void Pause() {
+
+    }
+
+    public static void Play() {
+
+    }
 }

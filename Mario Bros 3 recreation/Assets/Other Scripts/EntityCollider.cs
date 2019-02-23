@@ -60,6 +60,7 @@ public class EntityCollider : MonoBehaviour {
     private Collision2D ptp;
     private bool lastRes;
 
+    public bool IsColliding { get; private set; }
     public bool IsGrounded { get; private set; }
     public bool IsCeiling { get; private set; }
     public bool IsLeft { get; private set; }
@@ -75,6 +76,7 @@ public class EntityCollider : MonoBehaviour {
         results = new Collider2D[resultsSize];
         StartCoroutine(CollCheck());
         lastRes = false;
+        IsColliding = false;
     }
 
     IEnumerator CollCheck() {
@@ -195,6 +197,15 @@ public class EntityCollider : MonoBehaviour {
 
             #endregion
         }
+    }
+
+    private IEnumerator OnCollisionStay2D(Collision2D col) {
+        yield return new WaitForFixedUpdate();
+        IsColliding = true;
+    }
+
+    private void OnCollisionExit2D(Collision2D collision) {
+        IsColliding = false;
     }
 
     //==============================================================================================================================//

@@ -5,13 +5,13 @@ TextureImporter:
     21300000: goomba1
     21300002: goomba2
     21300004: goomba3
-    21300006: EnemiesSMB3_3
+    21300006: Microgoomba
     21300008: EnemiesSMB3_4
     21300010: EnemiesSMB3_5
     21300012: EnemiesSMB3_6
     21300014: EnemiesSMB3_7
     21300016: EnemiesSMB3_8
-    21300018: EnemiesSMB3_9
+    21300018: Wing up
     21300020: EnemiesSMB3_10
     21300022: EnemiesSMB3_11
     21300024: EnemiesSMB3_12
@@ -1204,7 +1204,7 @@ TextureImporter:
     21302398: EnemiesSMB3_1235
     21302400: EnemiesSMB3_1236
     21302402: EnemiesSMB3_107
-    21302404: EnemiesSMB3_108
+    21302404: Wing down
     21302406: EnemiesSMB3_1237
     21302408: EnemiesSMB3_1238
   externalObjects: {}
@@ -1349,7 +1349,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EnemiesSMB3_3
+      name: Microgoomba
       rect:
         serializedVersion: 2
         x: 48
@@ -1469,15 +1469,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EnemiesSMB3_9
+      name: Wing up
       rect:
         serializedVersion: 2
         x: 136
-        y: 675
+        y: 674
         width: 8
-        height: 13
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        height: 14
+      alignment: 9
+      pivot: {x: -0.5, y: 0.071428575}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -25329,15 +25329,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EnemiesSMB3_108
+      name: Wing down
       rect:
         serializedVersion: 2
         x: 144
         y: 674
         width: 8
         height: 9
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      alignment: 9
+      pivot: {x: -0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class AnimatedSprite : MonoBehaviour {
-    public bool play = true;
+    private bool play = true;
     public float speed;
     public Sprite[] sprites;
 
@@ -26,5 +26,24 @@ public class AnimatedSprite : MonoBehaviour {
             if (i == sprites.Length) i = 0;
             } 
         }
+    }
+
+    public void Play() {
+        play = true;
+    }
+
+    public void Stop() {
+        play = false;
+    }
+
+    public void Stop(int n) {
+        Stop();
+        SetSprite(n);
+    }
+
+    public void SetSprite(int n) {
+        if (n < sprites.Length && n >= 0) i = n;
+        else Debug.LogError("The sprite could not be found");
+        sp.sprite = sprites[i];
     }
 }
