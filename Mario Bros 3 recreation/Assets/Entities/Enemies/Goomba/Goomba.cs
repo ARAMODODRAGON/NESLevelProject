@@ -55,6 +55,7 @@ public class Goomba : Enemies {
         } else if (killType.Equals("fire")) {
             hitPoints = 0;
             ass.Stop();
+            col.enabled = false;
             GetComponent<BoxCollider2D>().enabled = false;
             if (isFacingRight) rb.velocity = new Vector2(1f, 10f) * speed;
             else rb.velocity = new Vector2(-1f, 10f) * speed;
