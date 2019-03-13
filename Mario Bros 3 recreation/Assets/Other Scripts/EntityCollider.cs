@@ -200,6 +200,7 @@ public class EntityCollider : MonoBehaviour {
     }
 
     private IEnumerator OnCollisionStay2D(Collision2D col) {
+        box = (BoxCollider2D)col.otherCollider;
         yield return new WaitForFixedUpdate();
         IsColliding = true;
     }

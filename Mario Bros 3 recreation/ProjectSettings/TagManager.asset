@@ -8,6 +8,10 @@ TagManager:
   - EntityCollider
   - Fireball
   - Enemy
+  - Water
+  - Bricks&Blocks
+  - GameManager
+  - LevelManager
   layers:
   - Default
   - TransparentFX
@@ -51,11 +55,11 @@ TagManager:
   - name: Tiles
     uniqueID: 2474303995
     locked: 0
-  - name: Entity
-    uniqueID: 13708501
-    locked: 0
   - name: TileObjects
     uniqueID: 2775348239
+    locked: 0
+  - name: Entity
+    uniqueID: 13708501
     locked: 0
   - name: Player
     uniqueID: 79852875

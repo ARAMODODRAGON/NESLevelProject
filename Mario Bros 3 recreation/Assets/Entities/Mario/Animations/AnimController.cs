@@ -13,17 +13,17 @@ public class AnimController : MonoBehaviour {
 
     private void Start() {
         ps = GetComponent<Player>();
-        lastPow = ps.currentPow;
+        lastPow = ps.CurrentPow;
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         for (int i = 1; i < anim.layerCount; i++) {
             anim.SetLayerWeight(i, 0.0f);
         }
-        anim.SetLayerWeight(ps.currentPow, 1.0f);
+        anim.SetLayerWeight(ps.CurrentPow, 1.0f);
     }
 
     private void Update() {
-        int curPow = ps.currentPow;
+        int curPow = ps.CurrentPow;
 
         if (curPow != lastPow) {
             //first set all layer's weight to 0

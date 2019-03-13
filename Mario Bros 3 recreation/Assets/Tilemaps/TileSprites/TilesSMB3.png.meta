@@ -1380,8 +1380,11 @@ TextureImporter:
     21302750: TilesSMB3_1375
     21302752: TilesSMB3_1376
     21302754: TilesSMB3_1377
+    21302756: TilesSMB3_48
+    21302758: TilesSMB3_49
+    21302760: TilesSMB3_50
   externalObjects: {}
-  serializedVersion: 7
+  serializedVersion: 9
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -9446,11 +9449,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 650
-        y: 226
-        width: 26
-        height: 26
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        y: 239
+        width: 13
+        height: 13
+      alignment: 9
+      pivot: {x: 0.3846154, y: 0.61538464}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -27297,6 +27300,66 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 576211a08bb45c345b58c3acd3d12bd5
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesSMB3_48
+      rect:
+        serializedVersion: 2
+        x: 663
+        y: 239
+        width: 13
+        height: 13
+      alignment: 9
+      pivot: {x: 0.61538464, y: 0.61538464}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4d1f70507e8fe834aac972a1a962be31
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesSMB3_49
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 226
+        width: 13
+        height: 13
+      alignment: 9
+      pivot: {x: 0.3846154, y: 0.3846154}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 024d7c967c4d67a49a546a4e552f858c
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesSMB3_50
+      rect:
+        serializedVersion: 2
+        x: 663
+        y: 226
+        width: 13
+        height: 13
+      alignment: 9
+      pivot: {x: 0.61538464, y: 0.3846154}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4ac761851287b04483e60a298430d48
       vertices: []
       indices: 
       edges: []

@@ -194,6 +194,8 @@ MonoBehaviour:
   hitSmall: {fileID: 61436812060112168}
   curPowerUp: 1
   isTransitioning: 0
+  fireBall: {fileID: 8540503640258809394, guid: 33ccdb0872a5c1240a664875ce1a0841,
+    type: 3}
   maxWalkSpeed: 4.8
   maxRunSpeed: 7.46
   maxPSpeed: 10.1
@@ -207,8 +209,12 @@ MonoBehaviour:
   minJumpHeight: 1
   extraJumpHeight: 1.1
   bounceHeight: 5
-  fireBall: {fileID: 8540503640258809394, guid: 33ccdb0872a5c1240a664875ce1a0841,
-    type: 3}
+  xMaxWaterSpeed: 0
+  xMaxGroundedSpeed: 0
+  xWaterAccel: 0
+  xWaterDecel: 0
+  MaxWaterRiseSpeed: 0
+  MaxWaterFallSpeed: 0
 --- !u!114 &1397169257031005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,18 +242,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resultsSize: 1
-  CheckMain: 1
+  CheckMain: 0
   mainMask:
     serializedVersion: 2
-    m_Bits: 513
-  percentCoverage: {x: 1, y: 1}
+    m_Bits: 512
+  percentCoverage: {x: 0.9, y: 0.9}
   CheckCeil: 1
   TopThickness: 0.09
   TopCoverage: 0.9
-  TopDisplacement: 0
+  TopDisplacement: -0.01
   topLM:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 1025
   CheckGround: 1
   BottomThickness: 0.02
   BottomCoverage: 0.9
@@ -261,14 +267,14 @@ MonoBehaviour:
   LeftDisplacement: 0
   leftLM:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 1025
   CheckRight: 1
   RightThickness: 0.09
   RightCoverage: 0.75
   RightDisplacement: 0
   rightLM:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 1025
   DrawGizmos: 1
   box: {fileID: 9173313270539455822}
   results: []

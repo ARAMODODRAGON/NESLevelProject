@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : Entity {
+public partial class Player : Entity {
     // this instance of the player (there can only be one)
     public static Player instance;
 
@@ -18,34 +18,16 @@ public class Player : Entity {
     // the players different states
     public enum Powerups { dead, small, big, fire, leaf, frog };
     public Powerups curPowerUp;
-    public int currentPow {
+    public int CurrentPow {
         get {
             return (int)curPowerUp;
         }
     }
+    private bool isInWater;
     public bool isTransitioning;
     private bool isCrouching;
-    private bool isHover;
     private bool isAttack;
     private bool canAttack;
-
-    //movement variables
-    [Header("X Movement Variables")]
-    public float maxWalkSpeed;
-    public float maxRunSpeed;
-    public float maxPSpeed;
-    public float pTime;
-    public float XAccel;
-    public float XDeccel;
-    [Header("Y Movement Variables")]
-    public float jumpHeight;
-    public float riseTime;
-    public float fallSpeed;
-    public float fallAccel;
-    public float minJumpHeight;
-    public float extraJumpHeight;
-    private float extraJumptime;
-    public float bounceHeight;
 
     private Meter XVel;
     private Meter YTime;
@@ -58,8 +40,6 @@ public class Player : Entity {
 
     public GameObject fireBall;
 
-    #region initialization
-    
     protected override void Awake() {
         base.Awake();
         curPowerUp = Powerups.small;
@@ -69,9 +49,7 @@ public class Player : Entity {
         } else {
             instance = this;
         }
-    }
 
-    protected void Start() {
         //start small
         IsSmall = true;
         isFacingRight = false;
@@ -110,9 +88,36 @@ public class Player : Entity {
         isTransitioning = false;
     }
 
-    #endregion
+    protected void FixedUpdate() {
+        if (!isTransitioning && curPowerUp != Powerups.dead) {
 
-    #region properties
+            //do this once in the begining so i dont have to check multiple times
+            axis.getDir();
+            aBut.getInput();
+            bBut.getInput();
+
+            //checks
+            CheckForCrouch();
+            AttackCheck();
+            CheckForFlip();
+
+            if (!isInWater) {
+                GroundUpdate();
+            } else {
+                WaterUpdate();
+            }
+
+            //apply the new velocity
+            rb.velocity = new Vector3(XVel.Amount, YVel, 0.0f);
+        } else if (isTransitioning) {
+            rb.velocity = Vector3.zero;
+        }
+
+        //updates the properties in the animation controller
+        UpdateAnimVariables();
+    }
+
+    #region properties and methods
 
     private bool IsSmall {
         get {
@@ -142,10 +147,6 @@ public class Player : Entity {
         }
     }
 
-    #endregion
-                                       
-    #region public methods
-
     public void CollectItem(string itemName) {
         if (itemName.Equals("Mushroom") && curPowerUp == Powerups.small) {
             IsSmall = true;
@@ -173,41 +174,32 @@ public class Player : Entity {
         }
     }
 
-    #endregion
-    
-    protected void FixedUpdate() {
-        if (!isTransitioning && curPowerUp != Powerups.dead) {
+    private void CheckForFlip() {
+        //only flips the player if their holding a direction and also is moving in that direction
+        //eg. one direction is held but mario is sliding the other way so mario wont flip
+        if (isFacingRight && axis.Left && (XVel.Amount <= 0.0f || !ec.IsGrounded)) Flip();
+        if (!isFacingRight && axis.Right && (XVel.Amount >= 0.0f || !ec.IsGrounded)) Flip();
 
-            //do this once in the begining so i dont have to check multiple times
-            axis.getDir();
-            aBut.getInput();
-            bBut.getInput();
-
-            //flip the player accordingly
-            CheckForFlip();
-            //Debug.Log(axis.Down + ", " + axis.Left + ", " + axis.Right);
-
-            CheckForCrouch();
-            AttackCheck();
-
-            //first is horizontal movement
-            calculatePSpeed();
-            HandleXMovement();
-
-            //second is vertical movement
-            calculateJumpHeight();
-            HandleYMovement();
-
-            //apply the new velocity
-            rb.velocity = new Vector3(XVel.Amount, YVel, 0.0f);
-        } else if (isTransitioning) {
-            rb.velocity = Vector3.zero;
-        }
-
-        //updates the properties in the animation controller
-        UpdateAnimVariables();
-        
+        //this is for when they land and they arnt facing the right direction
+        if (XVel.Amount < 0.0f && isFacingRight && ec.IsGrounded) Flip();
+        if (XVel.Amount > 0.0f && !isFacingRight && ec.IsGrounded) Flip();
     }
+
+    public bool CanEnterPipe(PipeDirection dir) {
+        if (dir == PipeDirection.down) {
+            return ec.IsGrounded && axis.Down;
+        } else if (dir == PipeDirection.left) {
+            return ec.IsLeft && axis.Left;
+        } else if (dir == PipeDirection.right) {
+            return ec.IsRight && axis.Right;
+        } else if (dir == PipeDirection.up) {
+            return ec.IsCeiling && axis.Up;
+        } else {
+            return false;
+        }
+    }
+
+    #endregion
 
     #region attacking
 
@@ -226,7 +218,7 @@ public class Player : Entity {
         }
 
     }
-    
+
     private void Attack() {
         if (curPowerUp == Powerups.fire && GameObject.FindGameObjectsWithTag("Fireball").Length < 3) {
             Vector3 spawnPos = hitBig.bounds.center;
@@ -245,130 +237,10 @@ public class Player : Entity {
 
     #endregion
 
-    #region movement
-
-    private void CheckForFlip() {
-        //only flips the player if their holding a direction and also is moving in that direction
-        //eg. one direction is held but mario is sliding the other way so mario wont flip
-        if (isFacingRight && axis.Left && (XVel.Amount <= 0.0f || !ec.IsGrounded)) Flip();
-        if (!isFacingRight && axis.Right && (XVel.Amount >= 0.0f || !ec.IsGrounded)) Flip();
-
-        //this is for when they land and they arnt facing the right direction
-        if (XVel.Amount < 0.0f && isFacingRight && ec.IsGrounded) Flip();
-        if (XVel.Amount > 0.0f && !isFacingRight && ec.IsGrounded) Flip();
-    }
-
-    private void CheckForCrouch() {
-        if (curPowerUp != Powerups.small && ec.IsGrounded) {
-            if (axis.Down && !axis.Left && !axis.Right) {
-                isCrouching = true;
-                IsSmall = true;
-            } else {
-                isCrouching = false;
-                IsSmall = false;
-            }
-        }
-    }
-
-    private void calculatePSpeed() {
-        //control Pspeed based off of how long b is held and if the player is moving faster than run speed
-        if (bBut.ButtonHeld && XVel.Amount != 0.0f) {
-            //first the max speed gets set to the players run speed
-            if (XVel.Range < maxRunSpeed) {
-                XVel.Range = maxRunSpeed;
-            }
-            //then once mario is running at full speed, the p meter starts going up
-            if (XVel.Abs >= maxRunSpeed) {
-                PMeter.Amount += Time.fixedDeltaTime;
-            }
-            //once the pMeter has filled, the max speed gets increased to a new speed
-            if (PMeter.Amount == PMeter.Max) {
-                XVel.Range = maxPSpeed;
-            }
-        } else {
-            //if b is released or the speed is too slow, then the max is reset
-            XVel.Range = maxWalkSpeed;
-        }
-
-        //if marios speed is lower than the max run speed start counting the pmeter down
-        if (XVel.Abs < maxRunSpeed) {
-            PMeter.Amount -= Time.fixedDeltaTime;
-        }
-    }
-
-    private void HandleXMovement() {
-        //if mario hits a wall then the speed gets set to 0
-        if (ec.IsRight && XVel.Amount > 0.0f) {
-            XVel.Amount = 0.0f;
-        } else if (ec.IsLeft && XVel.Amount < 0.0f) {
-            XVel.Amount = 0.0f;
-        }
-
-        //accelerate in the given direction as long as the speed is slower than the max
-        if ((axis.Left ^ axis.Right) && XVel.Abs <= XVel.Range) {
-            if (axis.Left) {
-                XVel.Amount -= XAccel * Time.fixedDeltaTime;
-            } else if (axis.Right) {
-                XVel.Amount += XAccel * Time.fixedDeltaTime;
-            }
-        } else if (ec.IsGrounded) {
-            //have the player decelerate back to 0
-            if (XVel.Amount < -0.1f) XVel.Amount += XDeccel * Time.fixedDeltaTime;
-            else if (XVel.Amount > 0.1f) XVel.Amount -= XDeccel * Time.fixedDeltaTime;
-            //then check if the amount is within -0.1 to 0.1 and set to 0
-            if (XVel.Abs <= 0.1) XVel.Amount = 0.0f;
-        }
-    }
-
-    private void calculateJumpHeight() {
-        //calculates jump height based off run speed
-        if (ec.IsGrounded) {
-            extraJumptime = extraJumpHeight * XVel.Abs / maxPSpeed * (riseTime / jumpHeight);
-            if (YTime.Amount >= YTime.Max - 0.01f) {
-                YTime.Amount = YTime.Max;
-            }
-            YTime.Max = riseTime + extraJumptime;
-        }
-    }
-
-    private void HandleYMovement() {
-        //reset the timer if player has pressed jump
-        if (aBut.ButtonDown && ec.IsGrounded) {
-            YTime.Amount = 0.0f;
-            YVel = jumpHeight / riseTime;
-        }
-
-        //increase the timer and set the velocity to a constant speed until the timer is done
-        if (YTime.Amount < YTime.Max) {
-            YTime.Amount += Time.fixedDeltaTime;
-            //YVel = jumpHeight / riseTime;
-        }
-
-        //this will end the timer imediately if the player lets go of th jump button
-        if (!aBut.ButtonHeld && YTime.Amount >= (minJumpHeight / jumpHeight) * riseTime) {
-            YTime.Amount = YTime.Max;
-        }
-
-        //this end the timer imediately if the players head hits something
-        if (ec.IsCeiling) {
-            YTime.Amount = YTime.Max;
-            YVel = -fallSpeed;
-        }
-
-        //this applies downwards velocity once the timer is done
-        if (YTime.Amount >= YTime.Max) {
-            YVel -= Time.fixedDeltaTime * fallAccel;
-            if (rb.velocity.y < -fallSpeed) YVel = -fallSpeed / 2;
-            if (ec.IsGrounded && YVel <= 0.0f) YVel = 0.0f;
-        }
-    }
-
-    #endregion
-    
     private void UpdateAnimVariables() {
         //tell if marios on the ground
         anim.SetBool("IsGrounded", ec.IsGrounded && YVel <= 0.0f);
-        
+
         //this is for the diffrent run speeds
         if (XVel.Abs >= maxPSpeed) {
             anim.SetInteger("Speed", 4);
@@ -416,4 +288,15 @@ public class Player : Entity {
         anim.SetBool("CanAttack", canAttack);
     }
 
+    private void OnTriggerEnter2D(Collider2D col) {
+        if (col.tag == "Water") {
+            isInWater = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D col) {
+        if (col.tag == "Water") {
+            isInWater = false;
+        }
+    }
 }
